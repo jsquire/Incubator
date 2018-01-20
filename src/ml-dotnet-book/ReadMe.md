@@ -11,4 +11,9 @@
   
 * **data**
   <br />_The container for sets of training and validation data used by the various examples and prototypes.  Data sets are further organized by subfolder, attempting to group the related training and validation data together. _
+  
+  
+### Resources ###
+
+* [The book's GitHub repository](https://github.com/mathias-brandewinder/machine-learning-projects-for-dot-net-developers) _(contains the data sets and sample code)_
 
