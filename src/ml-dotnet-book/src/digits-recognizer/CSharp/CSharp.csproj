@@ -5,6 +5,7 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <AssemblyName>MachineLearningBook.DigitsRecognizer.CSharp</AssemblyName>
     <RootNamespace>MachineLearningBook.DigitsRecognizer.CSharp</RootNamespace>
+    <StartupObject></StartupObject>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

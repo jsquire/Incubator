@@ -8,6 +8,12 @@
     <AssemblyName>MachineLearningBook.DigitsRecognizer.CSharp.UnitTests</AssemblyName>
 
     <RootNamespace>MachineLearningBook.DigitsRecognizer.CSharp.UnitTests</RootNamespace>
+
+    <StartupObject></StartupObject>
+
+    <ApplicationIcon />
+
+    <OutputType>Library</OutputType>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

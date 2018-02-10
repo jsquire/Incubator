@@ -20,8 +20,8 @@ namespace MachineLearningBook.DigitsRecognizer.CSharp
 
     public static class ImageDistanceCalculators
     {
-        public static double Manhattan(IEnumerable<int>  pixels, 
-                                       IEnumerable<int>  otherPixels)
+        public static double Manhattan(IEnumerable<int> pixels, 
+                                       IEnumerable<int> otherPixels)
         {
             if (pixels == null)
             {
@@ -37,6 +37,9 @@ namespace MachineLearningBook.DigitsRecognizer.CSharp
             {
                 return 0;
             }
+
+            // Yuck.  If this were real code, we'd have to figure a better way to
+            // handle this.   For this exercise, it's good enough.
 
             if (pixels.Count() != otherPixels.Count())
             {
@@ -48,8 +51,8 @@ namespace MachineLearningBook.DigitsRecognizer.CSharp
                 .Sum();
         }
 
-        public static double Euclidean(IEnumerable<int>  pixels, 
-                                       IEnumerable<int>  otherPixels)
+        public static double Euclidean(IEnumerable<int> pixels, 
+                                       IEnumerable<int> otherPixels)
         {
             if (pixels == null)
             {
@@ -65,6 +68,9 @@ namespace MachineLearningBook.DigitsRecognizer.CSharp
             {
                 return 0;
             }
+
+            // Yuck.  If this were real code, we'd have to figure a better way to
+            // handle this.   For this exercise, it's good enough.
 
             if (pixels.Count() != otherPixels.Count())
             {
