@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace MachineLearningBook.DigitsRecognizer.CSharp
+namespace MachineLearningBook.DigitsRecognizer
 {
     public class BasicImageClassifier : IImageClassifier<ImageObservation<int>, IEnumerable<int>>
     {

@@ -6,7 +6,7 @@ using System.Threading;
 using FluentAssertions;
 using Xunit;
 
-namespace MachineLearningBook.DigitsRecognizer.CSharp.UnitTests
+namespace MachineLearningBook.DigitsRecognizer.UnitTests
 {
     public class BasicImageClassifierTests
     {
@@ -25,28 +25,28 @@ namespace MachineLearningBook.DigitsRecognizer.CSharp.UnitTests
         public void ConstructorValidatesCalculator()
         {
             Action actionUnderTest = () => new BasicImageClassifier(null);
-            actionUnderTest.ShouldThrow<ArgumentNullException>("becaue the calculator is required");
+            actionUnderTest.Should().Throw<ArgumentNullException>("becaue the calculator is required");
         }
 
         [Fact]
         public void TrainValidatesObservations()
         {
             Action actionUnderTest = () => new BasicImageClassifier(ImageDistanceCalculators.Manhattan).Train(null);
-            actionUnderTest.ShouldThrow<ArgumentNullException>("becaue the training set of observations is required");
+            actionUnderTest.Should().Throw<ArgumentNullException>("becaue the training set of observations is required");
         }
 
         [Fact]
         public void ClassifyValidatesData()
         {
             Action actionUnderTest = () => new BasicImageClassifier(ImageDistanceCalculators.Manhattan).Classify(null);
-            actionUnderTest.ShouldThrow<ArgumentNullException>("becaue the training set of data is required");
+            actionUnderTest.Should().Throw<ArgumentNullException>("becaue the training set of data is required");
         }
 
         [Fact]
         public void ClassifyValidatesTrainingBeforeClassifying()
         {
             Action actionUnderTest = () => new BasicImageClassifier(ImageDistanceCalculators.Manhattan).Classify(new[] { 1, 2, 3 });
-            actionUnderTest.ShouldThrow<InvalidOperationException>("becaue classifier must be trained before classifying");
+            actionUnderTest.Should().Throw<InvalidOperationException>("becaue classifier must be trained before classifying");
         }
 
         [Theory]

@@ -4,7 +4,7 @@ using FluentAssertions;
 using Moq;
 using Xunit;
 
-namespace MachineLearningBook.DigitsRecognizer.CSharp.UnitTests
+namespace MachineLearningBook.DigitsRecognizer.UnitTests
 {
     public class ImageClassifierEvaludatorTests
     {
@@ -12,14 +12,14 @@ namespace MachineLearningBook.DigitsRecognizer.CSharp.UnitTests
         public void CalculateCorrectPercentageValidatesTheValidationSet()
         {
             Action actionUnderTest = () => ImageClassifierEvaluator.CalculateCorrectPercentage(null, Mock.Of<IImageClassifier<ImageObservation<int>, IEnumerable<int>>>());
-            actionUnderTest.ShouldThrow<ArgumentNullException>("because the validation set is required");
+            actionUnderTest.Should().Throw<ArgumentNullException>("because the validation set is required");
         }
 
         [Fact]
         public void CalculateCorrectPercentageValidatesTheClassifier()
         {
             Action actionUnderTest = () => ImageClassifierEvaluator.CalculateCorrectPercentage(new ImageObservation<int>[0], null);
-            actionUnderTest.ShouldThrow<ArgumentNullException>("because the classifier set is required");
+            actionUnderTest.Should().Throw<ArgumentNullException>("because the classifier set is required");
         }
 
         [Fact]

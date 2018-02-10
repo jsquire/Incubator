@@ -6,7 +6,7 @@ using System.Threading;
 using FluentAssertions;
 using Xunit;
 
-namespace MachineLearningBook.DigitsRecognizer.CSharp.UnitTests
+namespace MachineLearningBook.DigitsRecognizer.UnitTests
 {
     public class ImageDistanceCalculatorTests
     {   
@@ -98,7 +98,7 @@ namespace MachineLearningBook.DigitsRecognizer.CSharp.UnitTests
             var nullArg = (pixels == null) ? nameof(pixels) : nameof(otherPixels);
             
             Action actionUnderTest = () => calculator(pixels, otherPixels);
-            actionUnderTest.ShouldThrow<ArgumentNullException>($"because { nullArg } was null when calling { calculator.Method.Name }");
+            actionUnderTest.Should().Throw<ArgumentNullException>($"because { nullArg } was null when calling { calculator.Method.Name }");
         }
 
         [Theory]
@@ -108,7 +108,7 @@ namespace MachineLearningBook.DigitsRecognizer.CSharp.UnitTests
                                                             IEnumerable<int>             otherPixels)
         {
             Action actionUnderTest = () => calculator(pixels, otherPixels);
-            actionUnderTest.ShouldThrow<ArgumentException>($"because the two sets of pixels did not have the same size when calling { calculator.Method.Name }");
+            actionUnderTest.Should().Throw<ArgumentException>($"because the two sets of pixels did not have the same size when calling { calculator.Method.Name }");
         }
 
         [Theory]

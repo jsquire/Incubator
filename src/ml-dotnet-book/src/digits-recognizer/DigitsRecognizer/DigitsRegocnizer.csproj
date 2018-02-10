@@ -3,13 +3,17 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.0</TargetFramework>
-    <AssemblyName>MachineLearningBook.DigitsRecognizer.CSharp</AssemblyName>
-    <RootNamespace>MachineLearningBook.DigitsRecognizer.CSharp</RootNamespace>
+    <AssemblyName>MachineLearningBook.DigitsRecognizer</AssemblyName>
+    <RootNamespace>MachineLearningBook.DigitsRecognizer</RootNamespace>
     <StartupObject></StartupObject>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Humanizer" Version="2.2.0" />
+  </ItemGroup>
 
 </Project>

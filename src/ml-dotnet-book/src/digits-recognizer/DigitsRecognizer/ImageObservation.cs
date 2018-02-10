@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace MachineLearningBook.DigitsRecognizer.CSharp
+namespace MachineLearningBook.DigitsRecognizer
 {
     /// <summary>
     ///   An observation made about an image.

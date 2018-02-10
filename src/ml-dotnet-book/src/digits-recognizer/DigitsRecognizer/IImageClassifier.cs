@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace MachineLearningBook.DigitsRecognizer.CSharp
+namespace MachineLearningBook.DigitsRecognizer
 {
     /// <summary>
     ///   A classifier for image data, serving as the unit of organization for training and executing

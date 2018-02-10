@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Collections.Generic;
 
-namespace MachineLearningBook.DigitsRecognizer.CSharp
+namespace MachineLearningBook.DigitsRecognizer
 {
     /// <summary>
     ///   The signature for functions that compute distances between images.
