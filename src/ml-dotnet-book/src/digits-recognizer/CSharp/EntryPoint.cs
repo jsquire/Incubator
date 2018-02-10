@@ -9,7 +9,7 @@ namespace MachineLearningBook.DigitsRecognizer.CSharp
         public static void Main(string[] args)
         {
             var dataSetFile    = "digits.csv";
-            var rootPath       = $" { Assembly.GetEntryAssembly().Location }/../../../data";
+            var rootPath       = $"{ Assembly.GetEntryAssembly().Location }/../../../data";
             var trainingPath   = Path.GetFullPath(Path.Combine(rootPath, $"training/{ dataSetFile }"));
             var validationPath = Path.GetFullPath(Path.Combine(rootPath, $"validation/{ dataSetFile }"));
 

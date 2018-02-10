@@ -4,15 +4,15 @@ using System.Linq;
 
 namespace MachineLearningBook.DigitsRecognizer.CSharp
 {
-    public class BasicImageClassifier : IImageClassifier<ImageObservation, IEnumerable<int>>
+    public class BasicImageClassifier : IImageClassifier<ImageObservation<int>, IEnumerable<int>>
     {
         private readonly ImageDistanceCalculator<int> distanceCalculator;
-        private IEnumerable<ImageObservation> observations;
+        private IEnumerable<ImageObservation<int>> observations;
 
         public BasicImageClassifier(ImageDistanceCalculator<int> calculator) =>
             this.distanceCalculator = calculator ?? throw new ArgumentNullException(nameof(calculator));
 
-        public void Train(IEnumerable<ImageObservation> observations) => 
+        public void Train(IEnumerable<ImageObservation<int>> observations) => 
             this.observations = observations ?? throw new ArgumentNullException(nameof(observations));
 
         public string Classify(IEnumerable<int> data)

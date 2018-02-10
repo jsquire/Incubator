@@ -53,7 +53,7 @@ namespace MachineLearningBook.DigitsRecognizer.CSharp.UnitTests
         [MemberData(nameof(BasicImageClassifierTests.ImageCalculatorData))]
         public void ClassifyIsSuccessfulWithMatchingSingleSet(ImageDistanceCalculator<int> calculator)
         {
-            var observations = new[] { new ImageObservation("Test", new[] { 1, 2, 3 }) };
+            var observations = new[] { new ImageObservation<int>("Test", new[] { 1, 2, 3 }) };
             var classifier   = new BasicImageClassifier(calculator);
 
             classifier.Train(observations);
@@ -65,7 +65,7 @@ namespace MachineLearningBook.DigitsRecognizer.CSharp.UnitTests
         public void ClassifyIsSuccessfulWithDifferentSingleSet(ImageDistanceCalculator<int> calculator)
         {
             var data         = new[] { 7, 8, 9 };
-            var observations = new[] { new ImageObservation("Test", new[] { 1, 2, 3 }) };
+            var observations = new[] { new ImageObservation<int>("Test", new[] { 1, 2, 3 }) };
             var classifier   = new BasicImageClassifier(calculator);
 
             classifier.Train(observations);
@@ -81,8 +81,8 @@ namespace MachineLearningBook.DigitsRecognizer.CSharp.UnitTests
 
             var observations = new[] 
             { 
-                new ImageObservation("Test",     new[] { 1, 2, 3 }),
-                new ImageObservation("Expected", data             )
+                new ImageObservation<int>("Test",     new[] { 1, 2, 3 }),
+                new ImageObservation<int>("Expected", data             )
             };
             
 
@@ -99,12 +99,12 @@ namespace MachineLearningBook.DigitsRecognizer.CSharp.UnitTests
 
             var observations = new[] 
             { 
-                new ImageObservation("One",   new[] {   0,   0,    0 }),
-                new ImageObservation("Two",   new[] { 789,   0,   -1 }),
-                new ImageObservation("Three", new[] {   1,   2,    3 }),
-                new ImageObservation("Four",  new[] { 999, 888,  777 }),
-                new ImageObservation("Five",  new[] {   1,   0, -789 }),
-                new ImageObservation("Six",   new[] {  12,   8,  765 })
+                new ImageObservation<int>("One",   new[] {   0,   0,    0 }),
+                new ImageObservation<int>("Two",   new[] { 789,   0,   -1 }),
+                new ImageObservation<int>("Three", new[] {   1,   2,    3 }),
+                new ImageObservation<int>("Four",  new[] { 999, 888,  777 }),
+                new ImageObservation<int>("Five",  new[] {   1,   0, -789 }),
+                new ImageObservation<int>("Six",   new[] {  12,   8,  765 })
             };
 
             var minIndex = 0;
