@@ -7,10 +7,10 @@
 ### Structure ###
 
 * **src**
-  <br />_The container for project source code.  Individual examples and prototypes are further organized by subfolder. _
+  <br />_The container for project source code.  Individual examples and prototypes are further organized by subfolder._
   
 * **data**
-  <br />_The container for sets of training and validation data used by the various examples and prototypes.  Data sets are further organized by subfolder, attempting to group the related training and validation data together. _
+  <br />_The container for sets of training and validation data used by the various examples and prototypes.  Data sets are further organized by subfolder, attempting to group the related training and validation data together._
   
   
 ### Resources ###
