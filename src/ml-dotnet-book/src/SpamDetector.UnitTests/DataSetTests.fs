@@ -7,6 +7,9 @@
         open Xunit
         open FsUnit.Xunit                
 
+        //
+        // DocType Parsing
+        //
         type ``Parsing a DocType should produce the expected results`` () =
             
             /// The set of theory data containing Document.DocType names.
@@ -45,7 +48,11 @@
                 result.IsNone |> should be True
 
         
-        type ``Parsing a document line should produce the expected results`` () =
+        //
+        // Line Parsing
+        //
+        type ``Parsing a line of data should produce the expected results`` () =
+
             [<Fact>]
             member verify.``A line without a separator fails parsing `` () =
                 let result = DataSet.parseLine "there is no tab here"
@@ -80,8 +87,61 @@
 
                 docType |> should equal expectedDocType
                 content |> should equal expectedContent
+        
+        //
+        // Data Set Parsing
+        //
+        type ``Parsing a set of data should produce the expected results`` () =
+            
+            [<Fact>]
+            member verify.``Parsing an empty set produces an empty result`` () =
+                let result = DataSet.parseData Seq.empty
+
+                result |> should be Empty
+
+            
+            [<Fact>]
+            member verify.``Parsing a set with only invalid lines produces an empty result`` () =
+                let data   = [ "INVALID"; "ALSO INVALID" ]
+                let result = DataSet.parseData data
+
+                result |> should be Empty
+
+            
+            [<Fact>]
+            member verify.``Parsing a data set ignores invalid lines `` () =
+                let data = [
+                    "NOT VALID"; 
+                    "Ham\tContent"; 
+                    "INVALID"
+                ]
                 
+                let result = DataSet.parseData data
+
+                result |> should not' (be Empty)
+                (Seq.length result) |> should equal 1
+
+            
+            [<Fact>]
+            member verify.``Parsing a set produces correct results`` () =
+                let source = [|
+                    (DataSet.DocType.Ham,  "ham content");
+                    (DataSet.DocType.Spam, "spam stuff")
+                |]
+                                
+                let result = 
+                    source
+                    |> Array.map (fun set -> sprintf "%s\t%s" ((fst set).ToString()) (snd set))
+                    |> DataSet.parseData 
+
+                result |> should not' (be Empty)
+
+                let isSourceResultMismatch (item:((DataSet.DocType * string) * (DataSet.DocType * string))) =
+                    match item with
+                        | ((sourceDocType, sourceContent), (resultDocType, resultContent)) -> ((sourceDocType <> resultDocType) || (sourceContent <> resultContent))
+                        | _                                                                -> failwith "Invalid parse result"
                 
-
-
-
+                result
+                |> Seq.zip source
+                |> Seq.filter isSourceResultMismatch
+                |> should be Empty                

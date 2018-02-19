@@ -44,8 +44,12 @@
                 | _                                 -> None
 
             
-
-            
+        /// Parses a set of data, ignoring lines that are not valid.
+        let parseData (dataSet:seq<string>) =
+            dataSet 
+            |> Seq.map parseLine
+            |> Seq.filter (fun line -> line.IsSome)
+            |> Seq.map (fun data -> data.Value)
                 
 
         
