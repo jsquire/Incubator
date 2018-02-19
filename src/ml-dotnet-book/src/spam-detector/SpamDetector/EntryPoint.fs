@@ -1,13 +1,11 @@
-﻿// Learn more about F# at http://fsharp.org
-namespace MachineLearningBook.SpamDetector
-    
-    open System
-    open System.Diagnostics
-    open System.Reflection
-    open Humanizer
-    open System.IO
-
+﻿namespace MachineLearningBook.SpamDetector
     module EntryPoint =
+
+        open System
+        open System.Diagnostics
+        open System.Reflection
+        open Humanizer
+        open System.IO
 
 
         [<EntryPoint>]
@@ -34,7 +32,7 @@ namespace MachineLearningBook.SpamDetector
         
             //watch.Reset()
             //watch.Start()
-        
+
             printfn "%d classifications were correct." 0
 
             runWatch.Stop()

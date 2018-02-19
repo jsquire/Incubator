@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="DataSet.fs" />
     <Compile Include="EntryPoint.fs" />
   </ItemGroup>
 
