@@ -1,0 +1,22 @@
+{
+    "IsEncrypted": false,
+    "Values": {
+        "AzureWebJobsStorage": "<< STORAGE CONNECTION STRING >>",
+        "AzureWebJobsDashboard": "<< STORAGE CONNECTION STRING >>",
+        "BatchBlobStorageConnection": "<< STORAGE CONNECTION STRING >>",
+        "BatchBlobStorageName": "<< STORAGE ACCOUNT NAME >>",
+        "BatchBlobSTorageUrl": "<< STORAGE ACCOUNT BASE URL >>",
+        "BatchBlobStorageKey":  "3<< STORAGE ACCOUNT KEY >>",
+        "BatchAccountUrl": "<< STORAGE ACCOUNT URL >>",
+        "BatchAccountName": "<< STORAGE ACCOUNT NAME >>",
+        "BatchAccountKey": "<< STORAGE ACCOUNT KEY >>",
+        "PoolTargetNodeCount": "3",
+        "PoolOsFamily": "5",
+        "PoolNodeVirtualMachineSize": "medium",
+        "RetryDeltaBackoff": "5",
+        "RetryMaxCount": "3",
+        "ShouldDeleteJob": "true",
+        "JobResourceContainerName": "resources"
+        
+    }
+}
