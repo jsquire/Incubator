@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2024
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlobMover", "BlobCopier\BlobMover.csproj", "{4B939390-33B1-4346-BF95-16BAF1CEE637}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BatchStarter", "BatchStarter\BatchStarter.csproj", "{B8987BB1-D2B9-4AB3-9550-2BEFD13F9702}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JobManager", "JobManager\JobManager.csproj", "{F89BA871-6BA4-40B6-84E2-344D37D23B1A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4B939390-33B1-4346-BF95-16BAF1CEE637}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4B939390-33B1-4346-BF95-16BAF1CEE637}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4B939390-33B1-4346-BF95-16BAF1CEE637}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4B939390-33B1-4346-BF95-16BAF1CEE637}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B8987BB1-D2B9-4AB3-9550-2BEFD13F9702}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B8987BB1-D2B9-4AB3-9550-2BEFD13F9702}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B8987BB1-D2B9-4AB3-9550-2BEFD13F9702}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B8987BB1-D2B9-4AB3-9550-2BEFD13F9702}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F89BA871-6BA4-40B6-84E2-344D37D23B1A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F89BA871-6BA4-40B6-84E2-344D37D23B1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F89BA871-6BA4-40B6-84E2-344D37D23B1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F89BA871-6BA4-40B6-84E2-344D37D23B1A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0B97F470-EE00-41B0-A900-255300A68268}
+	EndGlobalSection
+EndGlobal
