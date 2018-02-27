@@ -17,3 +17,4 @@
 
 * [The book's GitHub repository](https://github.com/mathias-brandewinder/machine-learning-projects-for-dot-net-developers) _(contains the data sets and sample code)_
 
+* [R2D3's Visual Introduction to Machine Learning](http://www.r2d3.us/visual-intro-to-machine-learning-part-1/) _(an awesome graphical presentation of basic concepts.  Highly recommended!)_ 
