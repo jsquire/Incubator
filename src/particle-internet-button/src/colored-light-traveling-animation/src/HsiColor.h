@@ -8,11 +8,11 @@
 */
 struct HsiColor
 {
+public:
     float hue;
     float saturation;
     float intensity;
 
-public:
     /**
     * Translates the HSI color format to the RGB format used by the
     * BetterPhotonButton's PixelColor.
