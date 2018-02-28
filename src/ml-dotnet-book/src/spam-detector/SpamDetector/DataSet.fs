@@ -22,26 +22,26 @@
             
             let splitPos = 
                 match line.IndexOf('\t') with
-                    | pos when pos >= 0 -> Some pos
-                    | _                 -> None
+                | pos when pos >= 0 -> Some pos
+                | _                 -> None
 
             let docType = 
                 match splitPos with
-                    | Some pos -> parseDocType (line.Substring(0, pos))
-                    | _        -> None
+                | Some pos -> parseDocType (line.Substring(0, pos))
+                | _        -> None
 
             let content =                
                 match splitPos with
-                    | Some pos -> 
-                          match line.Substring(pos + 1) with
-                              | text when not (String.IsNullOrEmpty(text)) -> Some text
-                              | _                                          -> None
+                | Some pos -> 
+                      match line.Substring(pos + 1) with
+                      | text when not (String.IsNullOrEmpty(text)) -> Some text
+                      | _                                          -> None
                     
-                    | _ -> None
+                | _ -> None
 
             match (docType, content) with
-                | (Some lineType, Some lineContent) -> Some (lineType, lineContent)
-                | _                                 -> None
+            | (Some lineType, Some lineContent) -> Some (lineType, lineContent)
+            | _                                 -> None
 
             
         /// Parses a set of data, ignoring lines that are not valid.

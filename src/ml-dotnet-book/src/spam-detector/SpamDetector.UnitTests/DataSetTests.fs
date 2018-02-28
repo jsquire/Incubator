@@ -31,8 +31,8 @@
             member verify.``DocTypes with mismatched case can be parsed`` (docTypeName:string) =
                 let testName =
                     match docTypeName.Substring(0, 1).ToLower() with
-                      | first when first < "m" -> docTypeName.ToLower()
-                      | _                      -> docTypeName.ToUpper()
+                    | first when first < "m" -> docTypeName.ToLower()
+                    | _                      -> docTypeName.ToUpper()
 
                 let result = DataSet.parseDocType testName
                 
@@ -138,8 +138,8 @@
 
                 let isSourceResultMismatch (item:((DataSet.DocType * string) * (DataSet.DocType * string))) =
                     match item with
-                        | ((sourceDocType, sourceContent), (resultDocType, resultContent)) -> ((sourceDocType <> resultDocType) || (sourceContent <> resultContent))
-                        | _                                                                -> failwith "Invalid parse result"
+                    | ((sourceDocType, sourceContent), (resultDocType, resultContent)) -> ((sourceDocType <> resultDocType) || (sourceContent <> resultContent))
+                    | _                                                                -> failwith "Invalid parse result"
                 
                 result
                 |> Seq.zip source

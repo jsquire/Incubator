@@ -14,8 +14,8 @@
 
             let private tokenScore (group:TokenGrouping) (token:Token) =
                 match group.TokenFrequencies.TryFind(token) with
-                    | Some frequency -> log frequency 
-                    | None           -> 0.0
+                | Some frequency -> log frequency 
+                | None           -> 0.0
 
             let private score (data:TokenizedData) (group:TokenGrouping) =
                 log (group.ProportionOfData + (data |> Seq.sumBy (tokenScore group)))
@@ -26,12 +26,12 @@
                 let tokenized = tokenizer data
 
                 match groups with
-                    | empty when Seq.isEmpty empty -> 
-                        None
+                | empty when Seq.isEmpty empty -> 
+                    None
 
-                    | groups ->                        
-                        Some (
-                            groups
-                            |> Seq.maxBy (fun (_, group) -> score tokenized group)
-                            |> fst
-                        )
+                | groups ->                        
+                    Some (
+                        groups
+                        |> Seq.maxBy (fun (_, group) -> score tokenized group)
+                        |> fst
+                    )

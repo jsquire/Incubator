@@ -19,12 +19,12 @@
         /// Tokenizes a set of data using traditional word breaks.
         let wordBreakTokenizer (data:string) =
             match data with
-                | data when String.IsNullOrEmpty(data) -> 
-                    Set.empty<Token>
+            | data when String.IsNullOrEmpty(data) -> 
+                Set.empty<Token>
                 
-                | _ ->
-                    data.ToLowerInvariant()
-                    |> wordMatcherEx.Matches
-                    |> Seq.cast<Match>
-                    |> Seq.map (fun wordMatch -> wordMatch.Value)
-                    |> Set.ofSeq
+            | _ ->
+                data.ToLowerInvariant()
+                |> wordMatcherEx.Matches
+                |> Seq.cast<Match>
+                |> Seq.map (fun wordMatch -> wordMatch.Value)
+                |> Set.ofSeq
