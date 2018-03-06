@@ -82,12 +82,7 @@ Display::Display(BetterPhotonButton* button,
 {
     auto midPoint = ((maximumAllowedLed - minimumAllowedLed) / 2);
 
-    this->button           = button;
-    this->unavailableColor = HsiColor { unavailbleHue, 1, 1 };
-    this->safeHue          = safeHue;
-    this->dangerHue        = dangerHue;
-
-    this->ledState = LedState
+    auto state = LedState
     {
         midPoint,
         minimumAllowedLed,
@@ -96,6 +91,13 @@ Display::Display(BetterPhotonButton* button,
         Direction::Forward,
         HsiColor { safeHue, 1 , 1 }
     };
+
+    this->button           = button;
+    this->unavailableColor = HsiColor { unavailbleHue, 1, 1 };
+    this->safeHue          = safeHue;
+    this->dangerHue        = dangerHue;
+    this->initialState     = state;
+    this->activeState      = state;
 }
 
 /**
@@ -106,7 +108,7 @@ Display::Display(BetterPhotonButton* button,
 */
 bool Display::tickLedAdvance()
 {
-    auto state            = this->ledState;
+    auto state            = this->activeState;
     auto button           = this->button;
     auto unavailableColor = this->unavailableColor.toPixelColor();
 
@@ -125,7 +127,7 @@ bool Display::tickLedAdvance()
     state.activeLed   = INCREMENT_OPS[state.activeDirection](state.activeLed);
     state.activeColor = calculateLedColor(state, this->safeHue, this->dangerHue);
 
-    this->ledState = state;
+    this->activeState = state;
 
     // Repaint the LEDs.  If there are any unavailable LEDs, color them as such.
 
@@ -151,8 +153,86 @@ bool Display::tickLedAdvance()
 */
 void Display::reverseLedDirection()
 {
-    this->ledState.activeDirection = static_cast<Direction>(std::abs(this->ledState.activeDirection - 1));
-};
+    this->activeState.activeDirection = static_cast<Direction>(std::abs(this->activeState.activeDirection - 1));
+}
+
+/**
+* Performs a tick of the LED animation for demonstrating a loss.  Note that no delay
+* will be applied.  Any timing adjustment is purview of the caller.
+*
+* @param { LedSide } side      - Indicates the side of the range to reduce; if set to Neither, the animation has no effect
+* @param { int }     tickCount - The current tick count for the animation
+*/
+void Display::tickLossDisplayAnimation(LedSide side,
+                                       int     tickCount)
+{
+    // If the side was not specified or this is an even animation frame, then
+    // there should be no LED activity.
+
+    if ((side == LedSide::Neither) || ((tickCount % 2) == 0))
+    {
+        clearLeds();
+        return;
+    }
+
+    // Color the side that has lost in the unavailable color.
+
+    auto state = this->activeState;
+    auto color = this->unavailableColor.toPixelColor();
+
+    if (side == LedSide::Minimum)
+    {
+        for (auto index = MIN_LED; index < state.ledMidPoint; ++index)
+        {
+            button->setPixel(index, color);
+        }
+    }
+    else
+    {
+        for(auto index = MAX_LED; index > state.ledMidPoint; --index)
+        {
+            button->setPixel(index, color);
+        }
+    }
+}
+
+/**
+* Sets the LED state to indicate a winner.  Note that there is no animation for this state.
+*
+* @param { LedSide } side      - Indicates the side of the range to reduce; if set to Neither, the animation has no effect
+*/
+void Display::activateWinDisplay(LedSide side)
+{
+    // If the side was not specified then there should be no LED activity.
+
+    if (side == LedSide::Neither)
+    {
+        clearLeds();
+        return;
+    }
+
+    // Color the side that has won in the safe color.
+
+    auto state = this->activeState;
+    auto color = HsiColor { this->safeHue, 1, 1 }.toPixelColor();
+
+    clearLeds();
+
+    if (side == LedSide::Minimum)
+    {
+        for (auto index = MIN_LED; index < state.ledMidPoint; ++index)
+        {
+            button->setPixel(index, color);
+        }
+    }
+    else
+    {
+        for (auto index = MAX_LED; index > state.ledMidPoint; --index)
+        {
+            button->setPixel(index, color);
+        }
+    }
+}
 
 /**
 * Allows the current LED state to be retrieved.
@@ -161,7 +241,7 @@ void Display::reverseLedDirection()
 */
 LedState Display::getLedState()
 {
-    return this->ledState;
+    return this->activeState;
 }
 
 /**
@@ -173,11 +253,13 @@ LedState Display::getLedState()
 */
 bool Display::reduceAvailableLeds(LedSide side)
 {
+    auto ledState = this->activeState;
+
     // If the side chosen was "Neither" then attempt to calculate the side.
 
     if (side == LedSide::Neither)
     {
-        side = determineLedSide(this->ledState);
+        side = determineLedSide(ledState);
     }
 
     // If the side was still "Neither" after calculation, then the LED is currently at the midPoint.  Tweak the side by using the
@@ -185,22 +267,22 @@ bool Display::reduceAvailableLeds(LedSide side)
 
     if (side == LedSide::Neither)
     {
-        side = (this->ledState.activeDirection == Direction::Forward) ? LedSide::Maximum : LedSide::Minimum;
+        side = (ledState.activeDirection == Direction::Forward) ? LedSide::Maximum : LedSide::Minimum;
     }
 
-    if ((side == LedSide::Minimum) && ((this->ledState.minAllowedLed + 1) < this->ledState.ledMidPoint))
+    if ((side == LedSide::Minimum) && ((ledState.minAllowedLed + 1) < ledState.ledMidPoint))
     {
-      ++(this->ledState.minAllowedLed);
+      ++(this->activeState.minAllowedLed);
       return true;
     }
 
-    if ((side == LedSide::Maximum) && ((this->ledState.maxAllowedLed - 1) > this->ledState.ledMidPoint))
+    if ((side == LedSide::Maximum) && ((ledState.maxAllowedLed - 1) > ledState.ledMidPoint))
     {
-        --(this->ledState.maxAllowedLed);
+        --(this->activeState.maxAllowedLed);
         return true;
     }
 
-    Serial.printlnf("Cannot reduce.  Side: %d || Min: %d || Max: %d || Mid: %d", side, this->ledState.minAllowedLed, this->ledState.maxAllowedLed, this->ledState.ledMidPoint);
+    Serial.printlnf("Cannot reduce.  Side: %d || Min: %d || Max: %d || Mid: %d", side, this->activeState.minAllowedLed, this->activeState.maxAllowedLed, this->activeState.ledMidPoint);
     return false;
 }
 
@@ -216,4 +298,20 @@ LedSide Display::determineLedSide(LedState ledState)
     return (ledState.activeLed == ledState.ledMidPoint)
         ?  LedSide::Neither
         :  (ledState.activeLed < ledState.ledMidPoint) ? LedSide::Minimum : LedSide::Maximum;
+}
+
+/**
+* Resets the state of the display.
+*/
+void Display::reset()
+{
+    this->activeState = this->initialState;
+}
+
+/**
+* Clears all LEDs, returning them to an "off" state.
+*/
+void Display::clearLeds()
+{
+    this->button->setPixels(0, 0, 0);
 }

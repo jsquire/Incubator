@@ -3,17 +3,33 @@
 #include "HsiColor.h"
 #include "Display.h"
 
+// Type definitions
+
+enum Activity
+{
+    Idle,
+    Interactive,
+    LossNotification,
+    WinNotification
+};
+
+struct GameState
+{
+    Activity activity;
+    int      activityTickCount;
+    int      ticksPerInteractiveMove;
+    int      ticksPerLossNotification;
+};
+
 // Constants
 
-const int TICKS_PER_MOVE = 10;
+static const int LOOP_DELAY = 15;
 
 // Globals
 
-auto active         = false;
-auto loopCount      = 0;
-auto ticksSinceMove = 0;
 auto internetButton = BetterPhotonButton();
 auto display        = new Display(&internetButton);
+auto gameState      = GameState { Activity::Idle, 0, 10, 25 };
 
 // Function signatures
 
@@ -26,66 +42,99 @@ void buttonHandler(int button, bool pressed);
 void setup()
 {
     internetButton.setup();
-    internetButton.setPixels(0, 0, 0);
     internetButton.setReleasedHandler(&buttonHandler);
+    display->clearLeds();
 
     Serial.begin();
 }
 
-// Particle::loop() runs over and over again, as quickly as it can execute.
 /**
 * This function runs continuously, as quickly as it can be executed.  This is the main loop where
 * any program logic should live.
 */
 void loop()
 {
-    if (active)
+    switch (gameState.activity)
     {
-        if (++ticksSinceMove == TICKS_PER_MOVE)
-        {
-            ticksSinceMove = 0;
+        case Activity::Interactive:
 
-            if (!display->tickLedAdvance())
+            // Attempt to advance the LED animation if enough ticks have elapsed since we last did so.
+
+            if (++gameState.activityTickCount == gameState.ticksPerInteractiveMove)
             {
-                display->reverseLedDirection();
+                gameState.activityTickCount = 0;
 
-                // Once we can't reduce, there's one more step that can be taken.   We probably don't want to do this for the actual game, but
-                // I want this for testing.   For real, this is where we decide the winner.  Flash the loss animation then light up the winner.
-                if (!display->reduceAvailableLeds())
+                // If the LED animiation cannot advance, then it "hit" the limit and the player for that
+                // side loses a LED position.
+
+                if (!display->tickLedAdvance())
                 {
-                    active = false;
-                    display->tickLedAdvance();
+                    // If we can no longer reduce the number of available LEDs, then the current player has lost the
+                    // game.  Advance the game state to showing the loss notification.
+
+                    if (!display->reduceAvailableLeds())
+                    {
+                        gameState.activity          = Activity::LossNotification;
+                        gameState.activityTickCount = 0;
+                    }
+                    else
+                    {
+                        display->reverseLedDirection();
+                    }
                 }
-
-                printLedState(display->getLedState());;
             }
-        }
 
-        delay(15);
-    }
-    else if (loopCount < 2)
-    {
-        // Haven't been able to figure out why, but if we don't do this for at least two loops,
-        // LED 1 wants to light up green before we do any animation.
-        //
-        // ¯\_(ツ)_/¯
-        //
-        internetButton.setPixels(0, 0, 0);
-        ++loopCount;
+            break;
+
+        case Activity::LossNotification:
+
+            // If there are ticks remaining on the loss notification, display it;  otherwise,
+            // transition to the win notification.
+
+            if (++gameState.activityTickCount <= gameState.ticksPerLossNotification)
+            {
+                auto side = display->determineLedSide(display->getLedState());
+                display->tickLossDisplayAnimation(side, gameState.activityTickCount);
+            }
+            else
+            {
+                gameState.activity          = Activity::WinNotification;
+                gameState.activityTickCount = 0;
+            }
+
+            break;
+
+        case Activity::WinNotification:
+            // Display the Win notification
+
+            if (gameState.activityTickCount == 0)
+            {
+                // The current side that will be determined is the side that was last unaable to
+                // reduce the LEDs - in other words the losing side.  This needs to be reversed to identify
+                // the winner.
+
+                auto side = display->determineLedSide(display->getLedState());
+                side = (side == LedSide::Minimum) ? LedSide::Maximum : LedSide::Minimum;
+
+                ++gameState.activityTickCount;                
+                display->activateWinDisplay(side);
+            }
+            break;
+
+        default:
+            // No activity is current. I haven't been able to figure out why, but if we don't do
+            // this for at least two loops at the outset, LED 1 wants to light up green before we
+            // do any animation.  Makes sense to keep forcing it off per-loop when the game state
+            // isn't actively updating LEDs.
+            //
+            // ¯\_(ツ)_/¯
+            //
+            internetButton.setPixels(0, 0, 0);
+            break;
     }
 
+    delay(LOOP_DELAY);
     internetButton.update(millis());
-}
-
-void printLedState(LedState state)
-{
-    Serial.printlnf("activeLed: %d", state.activeLed);
-    Serial.printlnf("minAllowedLed: %d", state.minAllowedLed);
-    Serial.printlnf("maxAllowedLed: %d", state.maxAllowedLed);
-    Serial.printlnf("ledMidPoint: %d", state.ledMidPoint);
-    Serial.printlnf("activeDirection: %d", state.activeDirection);
-    Serial.println("");
-    Serial.println("");
 }
 
 /**
@@ -102,10 +151,13 @@ void buttonHandler(int  button,
     {
         case 0:
             Serial.println("Starting/Stopping.");
-            active  = (!active);
-            display = new Display(&internetButton);
+            gameState.activity = (gameState.activity == Activity::Idle) ? Activity::Interactive : Activity::Idle;
 
-            if (!active) { internetButton.setPixels(0, 0, 0); }
+            if (gameState.activity == Activity::Interactive)
+            {
+                display->reset();
+            }
+
             break;
 
         case 1:
@@ -113,8 +165,8 @@ void buttonHandler(int  button,
             break;
 
         case 2:
-            active = false;
-            internetButton.setPixels(0, 0, 0);
+            gameState.activity =  Activity::Idle;
+            display->clearLeds();
             break;
 
         case 3:

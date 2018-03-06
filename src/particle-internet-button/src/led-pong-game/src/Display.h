@@ -27,7 +27,8 @@ private:
     static const int MAX_LED = 10;
 
     BetterPhotonButton* button;
-    LedState            ledState;
+    LedState            activeState;
+    LedState            initialState;
     HsiColor            unavailableColor;
     float               safeHue;
     float               dangerHue;
@@ -65,6 +66,23 @@ public:
     void reverseLedDirection();
 
     /**
+    * Performs a tick of the LED animation for demonstrating a loss.  Note that no delay
+    * will be applied.  Any timing adjustment is purview of the caller.
+    *
+    * @param { LedSide } side      - Indicates the side of the range to reduce; if set to Neither, the animation has no effect
+    * @param { int }     tickCount - The current tick count for the animation
+    */
+    void tickLossDisplayAnimation(LedSide side,
+                                  int     tickCount);
+
+    /**
+    * Sets the LED state to indicate a winner.  Note that there is no animation for this state.
+    *
+    * @param { LedSide } side      - Indicates the side of the range to reduce; if set to Neither, the animation has no effect
+    */
+    void activateWinDisplay(LedSide side);
+
+    /**
     * Allows the current LED state to be retrieved.
     *
     * @returns { LedState } The current state of the LED display
@@ -86,6 +104,16 @@ public:
     * @returns { LedSide } The side that the LED is currently on
     */
     LedSide determineLedSide(LedState ledState);
+
+    /**
+    * Resets the state of the display.
+    */
+    void reset();
+
+    /**
+    * Clears all LEDs, returning them to an "off" state.
+    */
+    void clearLeds();
 };
 
 #endif
