@@ -8,7 +8,6 @@
 */
 struct HsiColor
 {
-public:
     float hue;
     float saturation;
     float intensity;
@@ -19,7 +18,7 @@ public:
     *
     * @return {PixelColor}  The color of the HSI color represented as a PixelColor
     */
-    PixelColor to_PixelColor();
+    PixelColor toPixelColor();
 };
 
 #endif

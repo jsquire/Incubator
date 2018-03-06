@@ -6,7 +6,7 @@
 const int MIN_PIXEL = 0;
 const int MAX_PIXEL = 10;
 const int MIN_HUE   = 0;
-const int MAX_HUE   = 360;
+const int MAX_HUE   = 120;
 
 // Type Definitions
 
@@ -100,7 +100,7 @@ void loop()
 {
     if (active)
     {
-        animate(&ledColor, currentLed, 15);
+        animate(&ledColor, currentLed, 55);
     }
     else
     {
@@ -118,8 +118,8 @@ void animate(HsiColor* color, int targetLed, int speed)
 
     static const std::function<int(int)> ops [] =
     {
-        std::bind(std::plus<int>(),  _1, 1),
-        std::bind(std::minus<int>(), _1, 1)
+        std::bind(std::plus<int>(),  _1, 10),
+        std::bind(std::minus<int>(), _1, 10)
     };
 
     static auto opIndex = 0;
