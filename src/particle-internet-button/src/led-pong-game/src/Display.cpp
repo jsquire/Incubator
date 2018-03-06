@@ -118,7 +118,6 @@ bool Display::tickLedAdvance()
     if (((state.activeLed <= state.minAllowedLed) && (state.activeDirection == Direction::Backward)) ||
         ((state.activeLed >= state.maxAllowedLed) && (state.activeDirection == Direction::Forward)))
     {
-        Serial.printlnf("Cannot advance.  Active: %d || Min: %d || Max: %d || Direction: %d", state.activeLed, state.minAllowedLed, state.maxAllowedLed, state.activeDirection);
         return false;
     }
 
@@ -182,14 +181,14 @@ void Display::tickLossDisplayAnimation(LedSide side,
 
     if (side == LedSide::Minimum)
     {
-        for (auto index = MIN_LED; index < state.ledMidPoint; ++index)
+        for (auto index = MIN_LED; index <= state.ledMidPoint; ++index)
         {
             button->setPixel(index, color);
         }
     }
     else
     {
-        for(auto index = MAX_LED; index > state.ledMidPoint; --index)
+        for(auto index = MAX_LED; index >= state.ledMidPoint; --index)
         {
             button->setPixel(index, color);
         }
@@ -220,14 +219,14 @@ void Display::activateWinDisplay(LedSide side)
 
     if (side == LedSide::Minimum)
     {
-        for (auto index = MIN_LED; index < state.ledMidPoint; ++index)
+        for (auto index = MIN_LED; index <= state.ledMidPoint; ++index)
         {
             button->setPixel(index, color);
         }
     }
     else
     {
-        for (auto index = MAX_LED; index > state.ledMidPoint; --index)
+        for (auto index = MAX_LED; index >= state.ledMidPoint; --index)
         {
             button->setPixel(index, color);
         }
@@ -282,7 +281,6 @@ bool Display::reduceAvailableLeds(LedSide side)
         return true;
     }
 
-    Serial.printlnf("Cannot reduce.  Side: %d || Min: %d || Max: %d || Mid: %d", side, this->activeState.minAllowedLed, this->activeState.maxAllowedLed, this->activeState.ledMidPoint);
     return false;
 }
 

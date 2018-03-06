@@ -5,6 +5,14 @@
 
 // Type definitions
 
+enum ButtonPosition
+{
+    Top    = 0,
+    Right  = 1,
+    Bottom = 2,
+    Left   = 3
+};
+
 enum Activity
 {
     Idle,
@@ -116,7 +124,7 @@ void loop()
                 auto side = display->determineLedSide(display->getLedState());
                 side = (side == LedSide::Minimum) ? LedSide::Maximum : LedSide::Minimum;
 
-                ++gameState.activityTickCount;                
+                ++gameState.activityTickCount;
                 display->activateWinDisplay(side);
             }
             break;
@@ -147,10 +155,12 @@ void loop()
 void buttonHandler(int  button,
                    bool pressed)
 {
+    // Button positions are determined based on the USB port being oriented to the "Top" of the button.  If the top
+    // or bottom buttons were pressed, then toggle or stop the game.
+
     switch (button)
     {
-        case 0:
-            Serial.println("Starting/Stopping.");
+        case ButtonPosition::Top:
             gameState.activity = (gameState.activity == Activity::Idle) ? Activity::Interactive : Activity::Idle;
 
             if (gameState.activity == Activity::Interactive)
@@ -158,23 +168,25 @@ void buttonHandler(int  button,
                 display->reset();
             }
 
-            break;
+            return;
 
-        case 1:
-            display->reverseLedDirection();
-            break;
-
-        case 2:
+        case ButtonPosition::Bottom:
             gameState.activity =  Activity::Idle;
             display->clearLeds();
-            break;
+            return;
 
-        case 3:
-            display->reverseLedDirection();
-            break;
+    }
 
+    // If one of the side buttons was pressed, then a ping of the LED was intended;  ensure that the LED is in the
+    // proper hemisphere and moving in the proper direction for the button that was pressed.  If so, then consider it
+    // a ping and reverse the LED direction.
 
+    auto state = display->getLedState();
+    auto side  = display->determineLedSide(state);
 
-
+    if (((button == ButtonPosition::Right) && (side == LedSide::Minimum) && (state.activeDirection == Direction::Backward)) ||
+        ((button == ButtonPosition::Left)  && (side == LedSide::Maximum) && (state.activeDirection == Direction::Forward)))
+    {
+        display->reverseLedDirection();
     }
 }
