@@ -2,6 +2,7 @@
 #include "BetterPhotonButton.h"
 #include "HsiColor.h"
 #include "Display.h"
+#include "Audio.h"
 
 // Type definitions
 
@@ -37,6 +38,7 @@ static const int LOOP_DELAY = 15;
 
 auto internetButton = BetterPhotonButton();
 auto display        = new Display(&internetButton);
+auto audio          = new Audio(&internetButton);
 auto gameState      = GameState { Activity::Idle, 0, 10, 25 };
 
 // Function signatures
@@ -65,7 +67,6 @@ void loop()
     switch (gameState.activity)
     {
         case Activity::Interactive:
-
             // Attempt to advance the LED animation if enough ticks have elapsed since we last did so.
 
             if (++gameState.activityTickCount == gameState.ticksPerInteractiveMove)
@@ -95,6 +96,13 @@ void loop()
             break;
 
         case Activity::LossNotification:
+            // If the state just transitioned, play the loss sound
+            // effect.
+
+            if (gameState.activityTickCount)
+            {
+                audio->playLossEffect();
+            }
 
             // If there are ticks remaining on the loss notification, display it;  otherwise,
             // transition to the win notification.
@@ -126,7 +134,17 @@ void loop()
 
                 ++gameState.activityTickCount;
                 display->activateWinDisplay(side);
+
             }
+            else if (gameState.activityTickCount == 1)
+            {
+                // The audio needs an extra tick to ensure that the loss effect has cleared.
+                // Run the win effect on a tick count of 1 to be sure.
+                
+                ++gameState.activityTickCount;
+                audio->playWinEffect();
+            }
+
             break;
 
         default:
@@ -137,7 +155,7 @@ void loop()
             //
             // ¯\_(ツ)_/¯
             //
-            internetButton.setPixels(0, 0, 0);
+            display->clearLeds();
             break;
     }
 
@@ -165,6 +183,7 @@ void buttonHandler(int  button,
 
             if (gameState.activity == Activity::Interactive)
             {
+                audio->stopAll();
                 display->reset();
             }
 
@@ -172,6 +191,7 @@ void buttonHandler(int  button,
 
         case ButtonPosition::Bottom:
             gameState.activity =  Activity::Idle;
+            audio->stopAll();
             display->clearLeds();
             return;
 
@@ -187,6 +207,7 @@ void buttonHandler(int  button,
     if (((button == ButtonPosition::Right) && (side == LedSide::Minimum) && (state.activeDirection == Direction::Backward)) ||
         ((button == ButtonPosition::Left)  && (side == LedSide::Maximum) && (state.activeDirection == Direction::Forward)))
     {
+        audio->playPingEffect();
         display->reverseLedDirection();
     }
 }

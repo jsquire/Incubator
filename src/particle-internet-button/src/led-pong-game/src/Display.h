@@ -6,6 +6,9 @@
 #ifndef Display_H
 #define Display_H
 
+#define MIN_LED  0
+#define MAX_LED  10
+
 /**
 * The side of the range that an operation is being performed on.  This is relative to
 * the manufacturer-specified LED numbers, to avoid ambiguity due to orientation of the device.
@@ -23,9 +26,6 @@ enum LedSide
 class Display
 {
 private:
-    static const int MIN_LED = 0;
-    static const int MAX_LED = 10;
-
     BetterPhotonButton* button;
     LedState            activeState;
     LedState            initialState;
@@ -37,7 +37,7 @@ public:
     /**
     * Initializes a new intance of the Display class.
     *
-    * @param { BetterPhotonButton }  button            - The internet button to animate each tick
+    * @param { BetterPhotonButton }  button            - The internet button to use for display manipulation
     * @paam  { int }                 minimumAllowedLed - The index of the minimum available LED for animation; defaults to MIN LED
     * @param { int }                 maximuAllowedLed  - The index of the maximum available LED for animation; defaults to MAX LED
     * @param { float }               safeHue           - The color hue to use when indicating that the LED is in a safe position; defaults to green

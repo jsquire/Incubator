@@ -66,7 +66,7 @@ HsiColor calculateLedColor(LedState ledState,
 /**
 * Initializes a new intance of the Display class.
 *
-* @param { BetterPhotonButton }  button            - The internet button to animate each tick
+* @param { BetterPhotonButton }  button            - The internet button to use for display manipulation
 * @paam  { int }                 minimumAllowedLed - The index of the minimum available LED for animation; defaults to MIN LED
 * @param { int }                 maximumAllowedLed - The index of the maximum available LED for animation; defaults to MAX LED
 * @param { float }               safeHue           - The color hue to use when indicating that the LED is in a safe position; defaults to green
