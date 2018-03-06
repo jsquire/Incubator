@@ -1,35 +1,43 @@
-# LED PONG
+# LED Pong #
 
-A very basic game of LED pong for the Particle internet button.
+### Overview ###
+A basic game for the Particle internet button where the objective is to protect your side of the button from losing LEDs by bouncing the animation back to your opponent's side.  Each time the LED makes it past your defense, you lose a LED until there are none remaining.  
 
-## Welcome to your project!
+### Playing the Game ###
 
-Every new Particle project is composed of 3 important elements that you'll see have been created in your project directory for led-pong-game.
+The game is intended for two local players, each holding one side of the internet button such that they can easily push the button at 3 and 9 o'clock.  The internet button should be oriented with the USB port facing up.  The controls are:
 
-#### ```/src``` folder:  
-This is the source folder that contains the firmware files for your project. It should *not* be renamed.
-Anything that is in this folder when you compile your project will be sent to our compile service and compiled into a firmware binary for the Particle device that you have targeted.
+- _**Top button:**_ Starts, resets, or stops a game
+- _**Bottom button:**_ Stops a game or clears the previous winner, shutting down the LEDs.
+- _**Left button:**_ Pings the LED back at your opponent when it is on your side and moving toward your scoring area
+- _**Right button:**_ Pings the LED back at your opponent when it is on your side and moving toward your scoring area  
 
-If your application contains multiple files, they should all be included in the `src` folder. If your firmware depends on Particle libraries, those dependencies are specified in the `project.properties` file referenced below.
+### Structure ###
+* ####```/src```
+  _This is the source folder that contains the firmware files for the game project. It should *not* be renamed.
+Anything that is in this folder when compliling will be sent to our Particle cloud service and compiled into a firmware binary for the Particle device that is currently have targeted._
 
-#### ```.ino``` file:
-This file is the firmware that will run as the primary application on your Particle device. It contains a `setup()` and `loop()` function, and can be written in Wiring or C/C++. For more information about using the Particle firmware API to create firmware for your Particle device, refer to the [Firmware Reference](https://docs.particle.io/reference/firmware/) section of the Particle documentation.
+  - #### ```/src/led-pong-game.ino```
+_This is the firmware that will run as the primary application, containing the game loop, initialization, and utility functionality._
 
-#### ```project.properties``` file:  
-This is the file that specifies the name and version number of the libraries that your project depends on. Dependencies are added automatically to your `project.properties` file when you add a library to a project using the `particle library add` command in the CLI or add a library in the Desktop IDE.
+  - #### ```/src/project.properties```  
+_This is the file that specifies the name and version number of the libraries that the game project depends on. This metadata is used by the Particle cloud when compiling the project._
 
-## Adding additional files to your project
+  - #### ```/src/Audio.*```
+_These are the class items for audio feedback in the game, responsible for playing sounds._
 
-#### Projects with multiple sources
-If you would like add additional files to your application, they should be added to the `/src` folder. All files in the `/src` folder will be sent to the Particle Cloud to produce a compiled binary.
+  - #### ```/src/Display.*```
+_These are the classes items for the game UI, responsible for animation and other LED manipulations._
 
-#### Projects with external libraries
-If your project includes a library that has not been registered in the Particle libraries system, you should create a new folder named `/lib/<libraryname>/src` under `/<project dir>` and add the `.h` and `.cpp` files for your library there. All contents of the `/lib` folder and subfolders will also be sent to the Cloud for compilation.
+  - #### ```/src/HsiColor.*```
+_These are the structures for providing a hue, saturation, and intensity color space and for translation to the RGB format used for the LEDs.  This construct allows for smoother color transitions when animating._
 
-## Compiling your project
+  - #### ```/src/LedState.h```
+_This structure provides the current state of the LEDs on the button, used by the display and main game constructs._
 
-When you're ready to compile your project, make sure you have the correct Particle device target selected and run `particle compile <platform>` in the CLI or click the Compile button in the Desktop IDE. The following files in your project folder will be sent to the compile service:
+  - #### ```/src/Direction.h```
+_This structure is used to denote the direction that the LEDs are animating and moving, used by the display and main game constructs._
 
-- Everything in the `/src` folder, including your `.ino` application file
-- The `project.properties` file for your project
-- Any libraries stored under `lib/<libraryname>/src`
+### Compiling ###
+
+To compile, make sure that you have the correct Particle device target selected and run `particle compile <platform>` in the CLI or click the Compile button in the Desktop IDE. The files in the project folder will be sent to the Particle cloud service and the resulting output flashed to the device.
