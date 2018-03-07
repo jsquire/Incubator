@@ -17,7 +17,7 @@ The game is intended for two local players, each holding one side of the interne
   _This is the source folder that contains the firmware files for the game project. It should *not* be renamed.
 Anything that is in this folder when compliling will be sent to our Particle cloud service and compiled into a firmware binary for the Particle device that is currently have targeted._
 
-  - #### ```/src/led-pong-game.ino```
+    - #### ```/src/led-pong-game.ino```
     _This is the firmware that will run as the primary application, containing the game loop, initialization, and utility functionality._
 
     - #### ```/src/project.properties```  
