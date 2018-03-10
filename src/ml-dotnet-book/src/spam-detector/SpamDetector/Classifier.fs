@@ -12,17 +12,17 @@
         /// Constructs assoiated wtih a naive Bayes classification
         module NaiveBayes =
 
-            let private tokenScore (group:TokenGrouping) (token:Token) =
+            let private tokenScore (group : TokenGrouping) (token : Token) =
                 match group.TokenFrequencies.TryFind(token) with
                 | Some frequency -> log frequency 
                 | None           -> 0.0
 
-            let private score (data:TokenizedData) (group:TokenGrouping) =
+            let private score (data : TokenizedData) (group : TokenGrouping) =
                 log (group.ProportionOfData + (data |> Seq.sumBy (tokenScore group)))
 
 
             /// Classifies a set of data by considering it against a grouping of measured tokens
-            let classify<'T> (groups:seq<(_ * TokenGrouping)>) (tokenizer:Tokenizer<'T>) (data:'T) =
+            let classify<'TData, 'TGroupBy> (groups : seq<('TGroupBy * TokenGrouping)>) (tokenizer : Tokenizer<'TData>) (data : 'TData) =
                 let tokenized = tokenizer data
 
                 match groups with

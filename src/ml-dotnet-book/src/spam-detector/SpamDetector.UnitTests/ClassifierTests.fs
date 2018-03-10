@@ -80,8 +80,8 @@
                 }
 
 
-                let expected  = obj()
-                let groups    = [| (obj(), lowGroup); (expected, highGroup) |]                                
+                let expected  = DataSet.DocType.Ham
+                let groups    = [| (DataSet.DocType.Spam, lowGroup); (expected, highGroup) |]                                
                 let tokenizer = (fun target -> Set.empty<Tokenizer.Token>.Add data)
                 let result    = NaiveBayes.classify groups tokenizer data
 

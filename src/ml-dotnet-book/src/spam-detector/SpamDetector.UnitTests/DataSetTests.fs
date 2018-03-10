@@ -139,7 +139,6 @@
                 let isSourceResultMismatch (item:((DataSet.DocType * string) * (DataSet.DocType * string))) =
                     match item with
                     | ((sourceDocType, sourceContent), (resultDocType, resultContent)) -> ((sourceDocType <> resultDocType) || (sourceContent <> resultContent))
-                    | _                                                                -> failwith "Invalid parse result"
                 
                 result
                 |> Seq.zip source

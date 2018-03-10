@@ -17,7 +17,7 @@
         let private wordMatcherEx = Regex(@"\w+", regexOptions)
 
         /// Tokenizes a set of data using traditional word breaks.
-        let wordBreakTokenizer (data:string) =
+        let wordBreakTokenizer (data : string) =
             match data with
             | data when String.IsNullOrEmpty(data) -> 
                 Set.empty<Token>

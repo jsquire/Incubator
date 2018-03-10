@@ -11,14 +11,14 @@
             
         
         /// Attempts to parses a string representation of the DocType
-        let parseDocType (stringValue:string) = 
+        let parseDocType (stringValue : string) = 
                 match FSharpType.GetUnionCases typeof<DocType> |> Array.filter (fun case -> String.Equals(case.Name, stringValue, StringComparison.InvariantCultureIgnoreCase)) with
                 | [| case |] -> Some(FSharpValue.MakeUnion(case, Array.empty) :?> DocType)
                 | _          -> None
 
 
         /// Parses a line in the document, separating the document type identifier from its content.
-        let parseLine (line:string) =            
+        let parseLine (line : string) =            
             
             let splitPos = 
                 match line.IndexOf('\t') with
@@ -45,7 +45,7 @@
 
             
         /// Parses a set of data, ignoring lines that are not valid.
-        let parseData (dataSet:seq<string>) =
+        let parseData (dataSet : seq<string>) =
             dataSet 
             |> Seq.map parseLine
             |> Seq.filter (fun line -> line.IsSome)
