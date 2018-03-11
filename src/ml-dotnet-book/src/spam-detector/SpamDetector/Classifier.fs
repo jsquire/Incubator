@@ -13,7 +13,9 @@
         module NaiveBayes =
 
             let private calculateProportion count total = 
-                (float count) / (float total)
+                match total with
+                | _ when total > 0 -> ((float count) / (float total))
+                | _                -> 0.0
 
             let private laplace count total =
                 (float (count + 1)) / (float (total + 1))
@@ -34,7 +36,9 @@
                 let dataElementWithTokensCount = tokenizedDataSet |> Seq.length
                                 
                 let calculateScore token = 
-                    laplace (countTokensIn tokenizedDataSet token) dataElementWithTokensCount
+                    match dataElementWithTokensCount with
+                    | count when count > 0 -> laplace (countTokensIn tokenizedDataSet token) dataElementWithTokensCount
+                    | _                    -> 0.0
 
                 let scoredTokens =
                     classificationTokens
