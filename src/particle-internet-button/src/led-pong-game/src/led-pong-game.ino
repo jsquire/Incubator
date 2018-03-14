@@ -134,15 +134,17 @@ void loop()
 
                 ++gameState.activityTickCount;
                 display.activateWinDisplay(side);
-
             }
             else if (gameState.activityTickCount == 1)
             {
                 // The audio needs an extra tick to ensure that the loss effect has cleared.
-                // Run the win effect on a tick count of 1 to be sure.
+                // Run the win effect on a tick count of 1 to be sure.  Do not advance the
+                // tick count until the effect has completed playing.
 
-                ++gameState.activityTickCount;
-                audio.playWinEffect();
+                if (!audio.playWinEffect())
+                {
+                    ++gameState.activityTickCount;
+                }
             }
 
             break;
