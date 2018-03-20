@@ -2,10 +2,12 @@
     module ClassifierTests =
 
         open MachineLearningBook.SpamDetector
+        open DataSet
         open Tokenizer
         open Classifier
         open Xunit
         open FsUnit.Xunit  
+      
 
         //
         // Naive Bayes Analyze tests
@@ -167,6 +169,140 @@
                 |> Seq.length
                 |> should equal 1
 
+        //
+        // Naive Bayes Transform tests
+        //
+        type ``The Naive Bays data transformation should produce the expected results`` () =
+
+            static member DataTransformationLengthMemberData
+                with get() =                                         
+                    seq<obj[]> {
+                        yield [| [ (DocType.Ham, "this is a test")];                                                                                          1 |]
+                        yield [| [ (DocType.Ham, "this is a test"); (DocType.Spam, "Another one") ];                                                          2 |]
+                        yield [| [ (DocType.Ham, "this is a test"); (DocType.Spam, "Another one"); (DocType.Spam, "A thired") ];                              2 |]
+                        yield [| [ (DocType.Ham, "this is a test"); (DocType.Spam, "Another one"); (DocType.Spam, "A thired"); (DocType.Spam, "A fourth" ) ]; 2 |]
+                        yield [| list<DocType * string>.Empty;                                                                                                0 |]
+                    }
+
+
+            static member DataTransformationResultLabelsMemberData
+                with get() =                                         
+                    seq<obj[]> {
+                        yield [| [ (DocType.Ham, "this is a test")];                                                                                          [ DocType.Ham ]               |]
+                        yield [| [ (DocType.Ham, "this is a test"); (DocType.Spam, "Another one") ];                                                          [ DocType.Ham; DocType.Spam ] |]
+                        yield [| [ (DocType.Ham, "this is a test"); (DocType.Spam, "Another one"); (DocType.Spam, "A thired") ];                              [ DocType.Ham; DocType.Spam ] |]
+                        yield [| [ (DocType.Ham, "this is a test"); (DocType.Spam, "Another one"); (DocType.Spam, "A thired"); (DocType.Spam, "A fourth" ) ]; [ DocType.Ham; DocType.Spam ] |]
+                        yield [| [ (DocType.Ham, "this is a test"); (DocType.Ham, "Another one"); (DocType.Ham, "A thired"); (DocType.Ham, "A fourth" ) ];    [ DocType.Ham]                |]
+                        yield [| List<DocType * string>.Empty;                                                                                                List<DocType>.Empty           |]
+                    }
+
+
+            [<Fact>]
+            member verify.``An empty set of data produces an empty result`` () =
+                let empty  = List.empty<(DocType * string)>
+                let tokens = Set.empty.Add("One").Add("Two") 
+                let result = NaiveBayes.transformData empty Tokenizer.wordBreakTokenizer tokens
+
+                result |> should be Empty
+
+
+            [<Fact>]
+            member verify.``An empty set of classification tokens should produce no token results`` () =
+                let data   = [ (DocType.Ham, "this is a test"); (DocType.Spam, "Another one") ]
+                let tokens = Set.empty 
+                let result = NaiveBayes.transformData data Tokenizer.wordBreakTokenizer tokens
+                                
+                let tokenGroups = 
+                    result 
+                    |> Seq.map snd
+                    |> Seq.filter (fun group -> (not (Map.isEmpty group.TokenFrequencies)))
+
+                tokenGroups |> should be Empty
+
+            [<Theory>]
+            [<MemberData("DataTransformationLengthMemberData")>]
+            member verify.``A data set produces the expected result length`` (inputSet       : List<DocType * string>) 
+                                                                             (expectedLength : int)   =                
+                let tokens = Set.empty.Add("One").Add("Two") 
+                let result = NaiveBayes.transformData inputSet Tokenizer.wordBreakTokenizer tokens
+                
+                (result |> Seq.length) |> should equal expectedLength
+
+
+
+            [<Theory>]
+            [<MemberData("DataTransformationResultLabelsMemberData")>]
+            member verify.``A data set produces the expected result labels`` (inputSet       : List<DocType * string>) 
+                                                                             (expectedLabels : List<DocType>) =                
+                let tokens = Set.empty.Add("One").Add("Two") 
+                let result = NaiveBayes.transformData inputSet Tokenizer.wordBreakTokenizer tokens
+                
+                let resultLabels =
+                    result 
+                    |> Seq.map (fun item -> (fst item))
+                    |> List.ofSeq
+
+                
+                resultLabels |> should matchList expectedLabels
+
+            
+            [<Fact>]
+            member verify.``A data set with single label and no tokens produces the expected result tokens`` () =                
+                let docType  = DocType.Ham                
+                let tokens   = Set.empty.Add("One").Add("Two")
+                let inputSet = [ (docType, "This has no token")]; 
+                let result   = NaiveBayes.transformData inputSet Tokenizer.wordBreakTokenizer tokens
+
+                let groupings = 
+                    result                         
+                    |> Seq.map snd
+                    |> Array.ofSeq
+
+                groupings |> should haveLength 1
+
+                let grouping = groupings.[0]
+
+                grouping.ProportionOfData |> should equal 1.0
+                grouping.TokenFrequencies |> should haveCount 2
+                
+                grouping.TokenFrequencies 
+                |> Map.toList                
+                |> List.map fst
+                |> should matchList (tokens |> Set.toList)
+
+                grouping.TokenFrequencies
+                |> Map.toList
+                |> List.fold (fun acc item -> acc + (snd item)) 0.0
+                |> should (equalWithin 0.25) 1.0
+                
+
+            [<Fact>]
+            member verify.``A data set with single label and token produces the expected result tokens`` () =                
+                let docType  = DocType.Ham
+                let token    = "One"
+                let tokens   = Set.empty.Add(token)
+                let inputSet = [ (docType, (sprintf "This has %s" token)) ]; 
+                let result   = NaiveBayes.transformData inputSet Tokenizer.wordBreakTokenizer tokens
+
+                let groupings = 
+                    result                         
+                    |> Seq.map snd
+                    |> Array.ofSeq
+
+                groupings |> should haveLength 1
+
+                let grouping = groupings.[0]
+
+                grouping.ProportionOfData |> should equal 1.0
+                grouping.TokenFrequencies |> should haveCount 1
+                grouping.TokenFrequencies.ContainsKey(token) |> should be True
+
+                grouping.TokenFrequencies
+                |> Map.toList
+                |> List.fold (fun acc item -> acc + (snd item)) 0.0
+                |> should (equalWithin 0.5) 0.0
+
+        
         //
         // Naive Bayes Classification tests
         //

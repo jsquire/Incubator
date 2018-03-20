@@ -32,7 +32,9 @@
 
             
             /// Analyzes a set of tokenized documents to gain an understandng of the proportions to which tokens appear in them
-            let analyzeDataSet (tokenizedDataSet : seq<TokenizedData>) (totalDataElementCount : int) (classificationTokens : Set<Token>) =
+            let analyzeDataSet (tokenizedDataSet      : seq<TokenizedData>) 
+                               (totalDataElementCount : int) 
+                               (classificationTokens  : Set<Token>) =
                 let dataElementWithTokensCount = tokenizedDataSet |> Seq.length
                                 
                 let calculateScore token = 
@@ -51,9 +53,21 @@
                     TokenFrequencies = scoredTokens 
                 }
 
+            
+            /// Transforms raw data into a set of token groupings, organized grouped by the data label
+            let transformData (data : seq<_ * 'TData>) (tokenizer : Tokenizer<'TData>) (classificationTokens : Set<Token>) =            
+                let dataList  = data |> Seq.toList
+                let dataCount = dataList.Length
 
+                dataList
+                |> List.map (fun (label, content) -> (label, (tokenizer content)))
+                |> Seq.groupBy fst
+                |> Seq.map (fun (label, group) -> (label, (group |> Seq.map snd)))
+                |> Seq.map (fun (label, group) -> (label, (analyzeDataSet group dataCount classificationTokens)))
+
+            
             /// Classifies a set of data by considering it against a grouping of measured tokens
-            let classify<'TData, 'TGroupBy> (groups    : seq<('TGroupBy * TokenGrouping)>) 
+            let classify<'TData, 'TGroupBy> (groups    : seq<'TGroupBy * TokenGrouping>) 
                                             (tokenizer : Tokenizer<'TData>) 
                                             (data      : 'TData) =
                 let tokenized = tokenizer data
