@@ -21,9 +21,15 @@
                 (float (count + 1)) / (float (total + 1))
 
             let private countTokensIn (group : seq<TokenizedData>) (token : Token) =
-                group
-                |> Seq.filter (Set.contains token)
-                |> Seq.length
+                let x = 
+                    group
+                    |> Seq.filter (Set.contains token)
+
+                let y =
+                    x
+                    |> Seq.length
+
+                y
 
             let private tokenScore (group : TokenGrouping) (token : Token) =
                 match group.TokenFrequencies.TryFind(token) with

@@ -249,7 +249,7 @@
             [<Fact>]
             member verify.``A data set with single label and no tokens produces the expected result tokens`` () =                
                 let docType  = DocType.Ham                
-                let tokens   = Set.empty.Add("One").Add("Two")
+                let tokens   = (Set.empty.Add("One").Add("Two") |> Set.map (fun item -> item.ToLowerInvariant ()))
                 let inputSet = [ (docType, "This has no token")]; 
                 let result   = NaiveBayes.transformData inputSet Tokenizer.wordBreakTokenizer tokens
 
@@ -279,8 +279,8 @@
             [<Fact>]
             member verify.``A data set with single label and token produces the expected result tokens`` () =                
                 let docType  = DocType.Ham
-                let token    = "One"
-                let tokens   = Set.empty.Add(token)
+                let token    = "One".ToLowerInvariant ()
+                let tokens   = Set.empty.Add(token) 
                 let inputSet = [ (docType, (sprintf "This has %s" token)) ]; 
                 let result   = NaiveBayes.transformData inputSet Tokenizer.wordBreakTokenizer tokens
 
@@ -300,7 +300,7 @@
                 grouping.TokenFrequencies
                 |> Map.toList
                 |> List.fold (fun acc item -> acc + (snd item)) 0.0
-                |> should (equalWithin 0.5) 0.0
+                |> should (equalWithin 0.25) 1.0
 
         
         //
