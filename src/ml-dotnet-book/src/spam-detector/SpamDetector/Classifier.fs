@@ -20,16 +20,10 @@
             let private laplace count total =
                 (float (count + 1)) / (float (total + 1))
 
-            let private countTokensIn (group : seq<TokenizedData>) (token : Token) =
-                let x = 
-                    group
-                    |> Seq.filter (Set.contains token)
-
-                let y =
-                    x
-                    |> Seq.length
-
-                y
+            let private countTokensIn group token =
+                group
+                |> Seq.filter (Set.contains token)
+                |> Seq.length
 
             let private tokenScore (group : TokenGrouping) (token : Token) =
                 match group.TokenFrequencies.TryFind(token) with
@@ -41,6 +35,7 @@
             let analyzeDataSet (tokenizedDataSet      : seq<TokenizedData>) 
                                (totalDataElementCount : int) 
                                (classificationTokens  : Set<Token>) =
+                
                 let dataElementWithTokensCount = tokenizedDataSet |> Seq.length
                                 
                 let calculateScore token = 
@@ -61,7 +56,10 @@
 
             
             /// Transforms raw data into a set of token groupings, organized grouped by the data label
-            let transformData (data : seq<_ * 'TData>) (tokenizer : Tokenizer<'TData>) (classificationTokens : Set<Token>) =            
+            let transformData (data                 : seq<_ * 'TData>) 
+                              (tokenizer            : Tokenizer<'TData>) 
+                              (classificationTokens : Set<Token>) =            
+                
                 let dataList  = data |> Seq.toList
                 let dataCount = dataList.Length
 

@@ -173,7 +173,7 @@
         // Naive Bayes Transform tests
         //
         type ``The Naive Bays data transformation should produce the expected results`` () =
-
+            
             static member DataTransformationLengthMemberData
                 with get() =                                         
                     seq<obj[]> {
@@ -194,6 +194,41 @@
                         yield [| [ (DocType.Ham, "this is a test"); (DocType.Spam, "Another one"); (DocType.Spam, "A thired"); (DocType.Spam, "A fourth" ) ]; [ DocType.Ham; DocType.Spam ] |]
                         yield [| [ (DocType.Ham, "this is a test"); (DocType.Ham, "Another one"); (DocType.Ham, "A thired"); (DocType.Ham, "A fourth" ) ];    [ DocType.Ham]                |]
                         yield [| List<DocType * string>.Empty;                                                                                                List<DocType>.Empty           |]
+                    }
+
+            static member DataTransformationResultTokensMemberData
+                with get() =                                         
+                    seq<obj[]> {
+                        yield [| 
+                            [ (DocType.Ham, "this is a test") ]; 
+                            [ "test"; "one" ];
+                            Map.empty.Add(DocType.Ham, [ ("test", 1.0); ("one", 0.5) ]) 
+                        |]
+                        
+                        yield [| 
+                            [ (DocType.Ham, "this is a test"); (DocType.Spam, "Another test one") ]; 
+                            [ "test"; "one" ];
+                            Map.empty.Add(DocType.Ham, [ ("test", 1.0); ("one", 0.5) ]).Add(DocType.Spam, [ ("test", 1.0); ("one", 1.0)  ]) 
+                        |]
+
+                        yield [| 
+                            [ (DocType.Ham, "this is a test"); (DocType.Spam, "Another test one"); (DocType.Spam, "Last test") ]; 
+                            [ "test"; "one" ];
+                            Map.empty.Add(DocType.Ham, [ ("test", 1.0); ("one", 0.5) ]).Add(DocType.Spam, [ ("test", 1.0); ("one", 0.5)  ]) 
+                        |]
+
+                        yield [| 
+                            [ (DocType.Ham, "this is a test"); (DocType.Spam, "Another test one"); (DocType.Spam, "Last test"); (DocType.Spam, "one last") ]; 
+                            [ "test"; "one" ];
+                            Map.empty.Add(DocType.Ham, [ ("test", 1.0); ("one", 0.5) ]).Add(DocType.Spam, [ ("test", 0.66); ("one", 0.66) ]) 
+                        |]
+
+                        yield [| 
+                            [ (DocType.Ham, "this is a test"); (DocType.Spam, "Another test one"); (DocType.Spam, "Last test"); (DocType.Spam, "nothing here") ]; 
+                            [ "test"; "one" ];
+                            Map.empty.Add(DocType.Ham, [ ("test", 1.0); ("one", 0.5) ]).Add(DocType.Spam, [ ("test", 0.66); ("one", 0.33) ]) 
+                        |]
+                        
                     }
 
 
@@ -301,6 +336,90 @@
                 |> Map.toList
                 |> List.fold (fun acc item -> acc + (snd item)) 0.0
                 |> should (equalWithin 0.25) 1.0
+
+            
+            [<Fact>]
+            member verify.``A data set with two labels and tokens produces the expected result tokens`` () =                                
+                let token      = "One".ToLowerInvariant ()
+                let otherToken = "Two".ToLowerInvariant ()
+                let tokens     = Set.empty.Add(token).Add(otherToken)
+                let inputSet   = [ (DocType.Ham, (sprintf "This has %s" token)); (DocType.Spam, (sprintf "This has %s and %s" token otherToken)) ]
+                let result     = NaiveBayes.transformData inputSet Tokenizer.wordBreakTokenizer tokens
+
+                let groupings = 
+                    result                         
+                    |> Map.ofSeq
+
+                groupings |> should haveCount 2
+
+                // Examine the Ham 
+
+                groupings.ContainsKey(DocType.Ham) |> should be True
+
+                groupings.[DocType.Ham].ProportionOfData |> should equal 0.5
+                groupings.[DocType.Ham].TokenFrequencies |> should haveCount 2
+                groupings.[DocType.Ham].TokenFrequencies.ContainsKey token |> should be True
+                groupings.[DocType.Ham].TokenFrequencies.ContainsKey otherToken |> should be True
+
+                groupings.[DocType.Ham].TokenFrequencies.[token] |> should (equalWithin 0.1) 1.0
+                groupings.[DocType.Ham].TokenFrequencies.[otherToken] |> should (equalWithin 0.1) 0.5
+
+                // Examine the Spam 
+
+                groupings.ContainsKey(DocType.Spam) |> should be True
+
+                groupings.[DocType.Spam].ProportionOfData |> should equal 0.5
+                groupings.[DocType.Spam].TokenFrequencies |> should haveCount 2
+                groupings.[DocType.Spam].TokenFrequencies.ContainsKey(token) |> should be True
+                groupings.[DocType.Spam].TokenFrequencies.ContainsKey(otherToken) |> should be True
+
+                groupings.[DocType.Spam].TokenFrequencies.[token] |> should (equalWithin 0.1) 1.0
+                groupings.[DocType.Spam].TokenFrequencies.[otherToken] |> should (equalWithin 0.1) 1.0
+
+            [<Theory>]
+            [<MemberData("DataTransformationResultTokensMemberData")>]
+            member verify.``Data set transformation produces the expected result tokens``(inputSet : List<DocType * string>)  
+                                                                                         (tokens   : List<Token>)
+                                                                                         (expected : Map<DocType, List<Token * float>>) =                  
+                let docTypeInput = 
+                    inputSet
+                    |> List.map fst
+                    |> Set.ofList 
+
+
+                let result = 
+                    NaiveBayes.transformData inputSet Tokenizer.wordBreakTokenizer (tokens |> Set.ofList)
+                    |> Map.ofSeq
+
+
+                // The result set should have grouped the input by its DocType; verify that there are as many
+                // result items as there were unique DocType members in the input.
+
+                result |> should haveCount docTypeInput.Count
+
+                // Each DocType from the input set should be represented in the result set.
+
+                docTypeInput
+                |> Set.filter (fun item -> not (result.ContainsKey item))
+                |> should be Empty
+
+                // The result set should contain the set of tokens in each DocType mapping, with the expected
+                // proportions (within a fuzzy match due to laplace smoothing)
+                
+                for docType in docTypeInput do                    
+                    let resultItem          = result.[docType]
+                    let expectedFrequencies = (expected.[docType] |> Map.ofList)
+                    let inputCountOfDocType = (inputSet |> List.filter(fun item -> (fst item) = docType) |> List.length)
+                    let expectedProportion  = ((float inputCountOfDocType) / (float inputSet.Length))
+
+                    resultItem.ProportionOfData |> should (equalWithin 0.1) expectedProportion
+
+                    tokens
+                    |> List.filter (fun token -> not (resultItem.TokenFrequencies.ContainsKey token))
+                    |> should be Empty
+
+                    for token in tokens do
+                        resultItem.TokenFrequencies.[token] |> should (equalWithin 0.19) expectedFrequencies.[token]
 
         
         //
