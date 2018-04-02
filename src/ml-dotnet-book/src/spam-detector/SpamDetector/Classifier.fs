@@ -90,4 +90,12 @@
                         |> fst
                     )
 
+
+            /// Trains the model using the provided set of data, producing a classifier that can be used on other data sets.
+            let train (data                 : seq<_ * 'TData>) 
+                      (tokenizer            : Tokenizer<'TData>) 
+                      (classificationTokens : Set<Token>) =    
+            
+                let groups = transformData data tokenizer classificationTokens
+                classify groups tokenizer
             

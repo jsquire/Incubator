@@ -1,13 +1,13 @@
 ﻿namespace MachineLearningBook.SpamDetector.UnitTests
     module ClassifierTests =
 
+        open Microsoft.FSharp.Reflection
         open MachineLearningBook.SpamDetector
         open DataSet
         open Tokenizer
         open Classifier
         open Xunit
         open FsUnit.Xunit  
-      
 
         //
         // Naive Bayes Analyze tests
@@ -376,6 +376,7 @@
                 groupings.[DocType.Spam].TokenFrequencies.[token] |> should (equalWithin 0.1) 1.0
                 groupings.[DocType.Spam].TokenFrequencies.[otherToken] |> should (equalWithin 0.1) 1.0
 
+            
             [<Theory>]
             [<MemberData("DataTransformationResultTokensMemberData")>]
             member verify.``Data set transformation produces the expected result tokens``(inputSet : List<DocType * string>)  
@@ -504,3 +505,87 @@
                 result.IsSome |> should be True
                 result.Value  |> should equal expected
 
+
+        //
+        // Naive Bayes Training tests
+        //
+        type ``Training of the Naive Bays Classifier should produce the expected results`` () =            
+
+            [<Fact>]
+            member verify.``Training with an empty group returns a valid classifier`` () =               
+                let groups            = Seq.empty<_ * TokenGrouping>        
+                let data              = "something"
+                let tokens            = Set.empty<Tokenizer.Token>.Add data
+                let tokenizer         = (fun target -> tokens)
+                let classifier        = NaiveBayes.train groups tokenizer tokens                
+                let classifierType    = classifier.GetType();                
+                                
+                FSharpType.IsFunction (classifierType) |> should be True
+
+
+            [<Fact>]
+            member verify.``Training with a single group returns a classifier that identifies tokens in the group`` () =               
+                let docType           = DocType.Spam
+                let data              = "something"
+                let groups            = seq { yield (docType, data) }                
+                let tokens            = Set.empty<Tokenizer.Token>.Add data
+                let tokenizer         = (fun target -> tokens)
+                let classifier        = NaiveBayes.train groups tokenizer tokens                
+                let result            = classifier data
+
+                result.IsSome |> should be True
+                result.Value  |> should equal docType
+
+
+            [<Fact>]
+            member verify.``Training with a single group returns a classifier that can predict tokens not in the group`` () =               
+                let docType           = DocType.Ham
+                let data              = "something"
+                let groups            = seq { yield (docType, data) }                
+                let tokens            = Set.empty<Tokenizer.Token>.Add data
+                let tokenizer         = (fun target -> tokens)
+                let classifier        = NaiveBayes.train groups tokenizer tokens                
+                let result            = classifier "unknown"
+
+                result.IsSome |> should be True
+
+
+            [<Fact>]
+            member verify.``Training with multiple groups returns a classifier that identifies tokens in the group`` () =                               
+                let docType = DocType.Spam
+                let data    = "something"
+                
+                let groups = seq { 
+                    yield (docType,     (sprintf "This item has %s in it" data))
+                    yield (docType,     (sprintf "So does this one.  %s is here" data))
+                    yield (DocType.Ham, (sprintf "%s is here too" data))
+                    yield (DocType.Ham, ("It doesn't show up here, so the other type wins"))
+                }                   
+
+                let tokens            = Set.empty<Tokenizer.Token>.Add data
+                let tokenizer         = (fun target -> tokens)
+                let classifier        = NaiveBayes.train groups tokenizer tokens                
+                let result            = classifier data
+
+                result.IsSome |> should be True
+                result.Value  |> should equal docType
+
+
+            [<Fact>]
+            member verify.``Training with multiple groups group returns a classifier that can predict tokens not in the group`` () =               
+                let docType = DocType.Spam
+                let data    = "something"
+                
+                let groups = seq { 
+                    yield (docType,     (sprintf "This item has %s in it" data))
+                    yield (docType,     (sprintf "So does this one.  %s is here" data))
+                    yield (DocType.Ham, (sprintf "%s is here too" data))
+                    yield (DocType.Ham, ("It doesn't show up here, so the other type wins"))
+                } 
+                
+                let tokens            = Set.empty<Tokenizer.Token>.Add data
+                let tokenizer         = (fun target -> tokens)
+                let classifier        = NaiveBayes.train groups tokenizer tokens                
+                let result            = classifier "unknown"
+
+                result.IsSome |> should be True
