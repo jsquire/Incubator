@@ -28,3 +28,16 @@
                 |> Seq.cast<Match>
                 |> Seq.map (fun wordMatch -> wordMatch.Value)
                 |> Set.ofSeq
+
+        
+        (*
+            Note: Chapter 2 of the book continues on to refine the tokenizer into one that extracts words that appear more often
+                  in only one document type (Ham or Spam) and use those as the relevant tokens, rather than including every token
+                  found.  
+
+                  It also then does some basic massaging of those tokens to normalize patterns that appear to be phone numbers into a
+                  placeholder slug so that they can be more easily used for recognition of a specific pattern appearing in spam messages
+                  where callback or textback numbers are used.
+
+                  These enhancements are not yet included in this module.
+        *)

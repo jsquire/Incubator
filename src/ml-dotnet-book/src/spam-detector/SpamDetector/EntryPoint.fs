@@ -70,7 +70,6 @@
             printfn "%.3f%% of classifications were correct." correct
 
             runWatch.Stop()
-            printfn ""
             printfn "Run complete.  Total time: %s" (runWatch.Elapsed.Humanize())            
             
             printfn ""
