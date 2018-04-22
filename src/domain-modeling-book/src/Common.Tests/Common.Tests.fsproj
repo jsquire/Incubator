@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <IsPackable>false</IsPackable>
+    <AssemblyName>DomainModelingMadeFunctional.Common.Tests</AssemblyName>
+    <OutputType>Library</OutputType>
+  </PropertyGroup>
+   <ItemGroup>
+    <Compile Include="..\Shared\SharedAssemblyInfo.fs" Link="Assembly\SharedAssemblyInfo.fs" />
+    <Compile Include="Assembly\AssemblyInfo.fs" />
+    <Compile Include="EntryPoint.fs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="FsUnit.xUnit" Version="3.1.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.6.2" />
+    <PackageReference Include="Moq" Version="4.8.2" />
+    <PackageReference Include="xunit" Version="2.3.1" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.3.1" />
+    <DotNetCliToolReference Include="dotnet-xunit" Version="2.3.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Update="FSharp.Core" Version="4.3.4" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Common\Common.fsproj" />
+  </ItemGroup>
+</Project>

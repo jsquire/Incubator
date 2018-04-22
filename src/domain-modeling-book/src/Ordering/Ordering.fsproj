@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyName>DomainModelingMadeFunctional.Ordering</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\Shared\SharedAssemblyInfo.fs" Link="Assembly\SharedAssemblyInfo.fs" />
+    <Compile Include="Assembly\AssemblyInfo.fs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Update="FSharp.Core" Version="4.3.4" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Common\Common.fsproj" />
+  </ItemGroup>
+</Project>
