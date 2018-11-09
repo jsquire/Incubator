@@ -1,0 +1,14 @@
+﻿{
+    "IsEncrypted" : false,
+    "Values"      :
+    {
+        "AzureWebJobsStorage"           : "",
+        "AzureWebJobsDashboard"         : "",
+        "RatingsStoreConnection"        : "",
+        "RatingsDatabaseName"           : "",
+        "RatingsCollectionName"         : "",
+        "GetProductUrlFormatMask"       : "",
+        "GetUserUrlFormatMask"          : "",
+        "ExternalRequestTimeoutSeconds" : ""
+    }
+}
