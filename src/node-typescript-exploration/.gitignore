@@ -1,0 +1,5 @@
+# The build folder for this project contains build-related items,
+# not build output.  Override the default ignore from the repository
+# root.
+!build/
+!build/*

@@ -1,0 +1,36 @@
+{
+    "defaultSeverity": "error",
+
+    "linterOptions": {
+        "exclude" : [
+            "dist",
+            "node_modules",
+            "**/node_modules/*"
+        ]
+    },
+
+    "extends": [
+        "tslint:recommended"
+    ],
+
+    "jsRules": {
+        "max-line-length"      : false,
+        "no-console"           : false,
+        "eofline"              : false,
+        "trailing-comma"       : false,
+        "only-arrow-functions" : false,
+        "arrow-parens"         : [true, "ban-single-arg-parens"]
+    },
+
+    "rules": {
+        "typedef-whitespace"   : false,
+        "max-line-length"      : false,
+        "no-console"           : false,
+        "eofline"              : false,
+        "trailing-comma"       : false,
+        "only-arrow-functions" : false,
+        "arrow-parens"         : [true, "ban-single-arg-parens"]
+    },
+
+    "rulesDirectory": []
+}

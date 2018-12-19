@@ -1,0 +1,61 @@
+{
+  "compilerOptions" : {
+    "target"         : "ES2017",
+    "rootDir"        : ".",
+    "jsx"            : "react",
+    "newLine"        : "lf",
+    "declaration"    : true,
+    "declarationMap" : true,
+    "sourceMap"      : true,
+    "composite"      : true,
+    "removeComments" : true,
+
+    /* Do not handle ECMA Script, since Babel is in the pipeline */
+    "allowJs"        : false,
+    "checkJs"        : false,
+
+    /* Do Not Emit, Just perform type checking */
+    "noEmit"       : true,
+    "skipLibCheck" : true,
+    "pretty"       : true,
+
+    /* Strict Type-Checking Options */
+    "strict"       : true,
+    "alwaysStrict" : true,
+
+    /* Additional Checks */
+    "noUnusedLocals"     : true,
+    "noUnusedParameters" : true,
+    "noImplicitReturns"  : true,
+
+    /* Module Resolution Options */
+    "allowSyntheticDefaultImports" : true,
+    "module"                       : "ES2015",
+    "moduleResolution"             : "node",
+    "baseUrl"                      : ".",
+    "rootDirs"                     : ["./src"],
+
+    "paths" : {
+        "*" : ["src/*"]
+    }
+  },
+
+  /* Type Definitions */
+  "typeRoots" : [
+      "node_modules/@types"
+  ],
+
+  /* Complilation Paths */
+  "include": [
+      "src/**/*"
+  ],
+
+  "exclude": [
+      "dist",
+      "node_modules",
+      "**/node_modules/*"
+  ],
+
+  /* General Options */
+  "compileOnSave"  : true
+}

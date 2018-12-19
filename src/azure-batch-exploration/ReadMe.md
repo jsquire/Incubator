@@ -1,4 +1,4 @@
-# Azure Batch Exporation #
+# Azure Batch Exploration #
 
 ### Summary ###
 
