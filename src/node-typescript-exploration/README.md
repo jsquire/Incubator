@@ -4,7 +4,7 @@
 
 Begun in early 2018, this exploration was intended primarily to determine the feasibility of a two-stage transpilation process, allowing TypeScript to be transpiled to ECMA Script 6 and then using Babel to perform the ES6->ES5 transpilation.  At the time, there were some minor incompatibilities between the TypeScript and Babel results when reduced to ES5.
 
-This project was also meant to allow me to familiarize myself with some of the tools in the Node ecosystem that I hadn't previously worked with and reacquaint myself with some that had undergone non-trivial changes since I had last worked with them.  Because the exploration was largely about understanding the tools, building out infrastructure, and scaffolding an actual project, there is little to no concept of an application.
+This project was also meant to allow me to familiarize myself with some of the tools in the Node ecosystem that I hadn't previously worked with and reacquaint myself with some that had undergone non-trivial changes since I had last worked with them.  Because the exploration was largely about understanding the tools, building out infrastructure, and scaffolding an actual project, there is little to no concept of an application.  The interesting bits come in the form of the overall environment and tooling configuration, NPM scripts, and general structure.
 
 The code is prototype-level, which is to say that there’s a bunch of best practices and polish missing for something that I’d consider to be production-worthy.  For example, there are no *real* unit tests; the infrastructure was put into place with some placeholder stubs to familiarize with the scaffolding and to verify the environment.
 
