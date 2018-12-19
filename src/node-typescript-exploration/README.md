@@ -2,7 +2,7 @@
 
 ### Summary ###
 
-Begun in early 2018, this exploration was intended primarily to determine the feasibility of a two-stage transpilation process, allowing TypeScript to be transpiled to ECMA Script 6 and then using Babel to perform the ES6->ES5 transpilation.  At the time, there were some minor incompatibilities between the TypeScript and Babel results when reduced to ES5.
+Begun in early 2018, this exploration was intended primarily to determine the feasibility of a two-stage transpilation process, allowing TypeScript to be transpiled to ECMA Script 6 and then using Babel to perform the ES6->ES5 transpilation.  At the time, there were some minor incompatibilities between the TypeScript and Babel results when reduced to ES5.  Since this exploration was performed, the incompatibilities in the TypeScript compiler have been addressed and Babel 7 is no longer in beta; either is worth considering as a potential choice for mixing TypeScript and ECMA Script in a Node codebase, either applying the Babel->TypeScript delegation approach used here or leveraging the TypeScript compiler for both TypeScript and ECMA Script files.
 
 This project was also meant to allow me to familiarize myself with some of the tools in the Node ecosystem that I hadn't previously worked with and reacquaint myself with some that had undergone non-trivial changes since I had last worked with them.  Because the exploration was largely about understanding the tools, building out infrastructure, and scaffolding an actual project, there is little to no concept of an application.  The interesting bits come in the form of the overall environment and tooling configuration, NPM scripts, and general structure.
 
