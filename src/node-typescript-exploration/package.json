@@ -5,14 +5,9 @@
   "license": "MIT",
   "repository": "",
   "author": "Jesse Squire",
-  "contributors": [
-  ],
-
+  "contributors": [],
   "main": "dist/api.server.js",
-
-  "sideEffects": [
-  ],
-
+  "sideEffects": [],
   "config": {
     "environment": "local",
     "debugLogEnv": "app:*",
@@ -27,23 +22,19 @@
     "devBundleConfig": "build/webpack.config.dev.js",
     "prodBundleConfig": "build/webpack.config.prod.js"
   },
-
   "scripts": {
     "start": "npm run watch -s",
     "exec": "npm run env/init -s -- npm run babel-node -s $npm_package_config_sourceEntryPoint",
     "watch": "npm run env/init -s -- npm run nodemon -s -- -e $npm_package_config_watchExtensions --watch $npm_package_config_sourcePathPattern --ignore \"$npm_package_config_testFilePattern\" --exec \"npm run exec -s\"",
     "clean": "npm run npm-run-all -s -- --parallel build/clean test-build/clean",
     "env/init": "npm run cross-var -s -- npm run cross-env -s -- NODE_ENV=$npm_package_config_environment DEBUG=$npm_package_config_debugLogEnv",
-
     "lint": "npm run tslint -s -- --force",
     "lint-src": "npm run env/init -s -- npm run tslint -s -- --force --exclude $npm_package_config_testFilePattern",
-    "lint/enforce" : "npm run tslint -s",
-
+    "lint/enforce": "npm run tslint -s",
     "debug": "npm run env/init -s -- npm run babel-debug -s -- --inspect=$npm_package_config_debugPort $npm_package_config_sourceEntryPoint",
     "debug-break": "npm run env/init -s -- npm run babel-debug -s -- --inspect-brk=$npm_package_config_debugPort $npm_package_config_sourceEntryPoint",
     "debug-watch": "npm run env/init -s -- npm run nodemon -s -- -e $npm_package_config_watchExtensions --watch $npm_package_config_sourcePathPattern --ignore \"$npm_package_config_testFilePattern\" --exec \"npm run debug -s\"",
     "debug-break-watch": "npm run env/init -s -- npm run nodemon -s -- -e $npm_package_config_watchExtensions --watch $npm_package_config_sourcePathPattern --ignore \"$npm_package_config_testFilePattern\" --exec \"npm run debug-break -s\"",
-
     "build": "npm run npm-run-all -s -- lint/enforce build/clean build/bundle/prod build/output/test",
     "build-dev": "npm run npm-run-all -s -- lint build/clean build/bundle/dev build/output/test",
     "build-compile": "npm run npm-run-all -s -- build/clean build/create build/test-compile",
@@ -55,14 +46,12 @@
     "build/create": "npm run env/init -s -- node ./build/create-path.js ../$npm_package_config_buildOutputDir",
     "build/clean": "npm run env/init -s -- node ./build/clean.js ../$npm_package_config_buildOutputDir",
     "build/output/test": "npm run env/init -s -- npm run mocha -s -- --colors --recursive --reporter=progress \"$npm_package_config_testBuildOutputPattern\"",
-
     "test": "npm run env/init -s -- npm run istanbul -s -- npm run babel-mocha -s -- --require \"./node_modules/@babel/register\" --colors --recursive \"$npm_package_config_testFilePattern\"",
     "test-debug": "npm run env/init -s -- npm run babel-debug -s -- --inspect=$npm_package_config_debugPort ./node_modules/mocha/bin/_mocha --require \"./node_modules/@babel/register\" --colors --recursive \"$npm_package_config_testFilePattern\"",
     "test-debug-break": "npm run env/init -s -- npm run babel-debug -s -- --inspect-brk=$npm_package_config_debugPort ./node_modules/mocha/bin/_mocha --require \"./node_modules/@babel/register\" --colors --recursive \"$npm_package_config_testFilePattern\"",
     "test-watch": "npm run env/init -s -- npm run nodemon -s -- -e $npm_package_config_watchExtensions --watch $npm_package_config_sourcePathPattern --exec \"npm run test -s\"",
     "test-compile": "npm run npm-run-all -s -- test-build/test/clean test-build/test/create build/test/compile-only",
     "test/progress": "npm run test -s -- --reporter=progress",
-
     "webpack": "node ./node_modules/.bin/webpack",
     "tslint": "node ./node_modules/.bin/tslint --project . --format stylish",
     "npm-run-all": "node ./node_modules/.bin/npm-run-all",
@@ -76,7 +65,6 @@
     "babel-mocha": "node ./node_modules/.bin/babel-node --source-maps --extensions \".ts,.js\" --plugins=istanbul ./node_modules/mocha/bin/_mocha",
     "babel-debug": "node ./node_modules/.bin/babel-node --source-maps --sourceMaps=inline --extensions \".ts,.js\""
   },
-
   "dependencies": {
     "chalk": "^2.4.1",
     "debug": "^3.1.0",
@@ -84,14 +72,13 @@
     "nconf": "^0.10.0",
     "yargs": "^11.0.0"
   },
-
   "devDependencies": {
     "@babel/cli": "^7.0.0-beta.51",
-    "@babel/core": "^7.0.0-beta.51",
-    "@babel/node": "^7.0.0-beta.51",
+    "@babel/core": "^7.4.0",
+    "@babel/node": "^7.2.2",
     "@babel/polyfill": "^7.0.0-beta.51",
-    "@babel/preset-env": "^7.0.0-beta.51",
-    "@babel/preset-stage-3": "^7.0.0-beta.51",
+    "@babel/preset-env": "^7.4.2",
+    "@babel/preset-stage-3": "^7.0.0",
     "@babel/preset-typescript": "^7.0.0-beta.51",
     "@babel/register": "^7.0.0-beta.51",
     "@types/chai": "^4.1.4",
@@ -114,7 +101,7 @@
     "mocha-webpack": "^1.1.0",
     "nodemon": "^1.17.5",
     "npm-run-all": "^4.1.3",
-    "nyc": "^12.0.2",
+    "nyc": "^13.3.0",
     "rimraf": "^2.6.2",
     "sinon": "^5.1.1",
     "tslint": "^5.10.0",
