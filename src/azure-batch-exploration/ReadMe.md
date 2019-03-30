@@ -8,5 +8,5 @@ The code is prototype-level, which is to say that there’s a bunch of best prac
 
 ### Structure ###
 
-* **src**
+* **src**  
 _The container for project source code._
