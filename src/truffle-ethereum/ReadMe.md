@@ -10,5 +10,5 @@ There remains a ton of depth which I haven’t explored, both in term of the mec
 
 ### Structure ###
 
-* **src**
+* **src**  
 _The container for project source code._
