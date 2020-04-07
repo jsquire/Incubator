@@ -8,6 +8,10 @@ The code is prototype-level, which is to say that it is rudimentary without adhe
 
 There remains a ton of depth which I haven’t explored, both in term of the mechanics of using a Blockchain and the architectural considerations.  Some unexplored topics of interest are deciding the appropriate role is for smart contracts in a real-world system, how to model domains, when to use on-chain versus off-chain storage, and how to best incorporate custom consensus mechanisms for block approval.
 
+#### Warning ####
+
+This project was a point-in-time experiment and is not actively maintained.  Assets have aged and may have security vulnerabilities.  It is highly recommended that dependencies aare updated before making use of any project assets.
+
 ### Structure ###
 
 * **src**  
