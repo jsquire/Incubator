@@ -10,6 +10,10 @@ The code is prototype-level, which is to say that there’s a bunch of best prac
 
 Despite the rough patches, I did try to comment extensively to narrate what was going on and why.
 
+#### Warning ####
+
+This project was a point-in-time experiment and is not actively maintained.  Assets have aged and may have security vulnerabilities.  It is highly recommended that dependencies aare updated before making use of any project assets.
+
 ### Project Goals ###
 
 - Build out scaffolding for a Node project, incorporating a modern tool set and organized into a lucid structure
