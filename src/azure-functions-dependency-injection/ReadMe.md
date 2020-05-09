@@ -11,5 +11,5 @@ The code herein is prototype-level; best practices are not always adhered to and
 ### Structure ###
 
 * **src**
-  <br />_The container for project source code._
+  _The container for project source code._
   
