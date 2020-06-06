@@ -6,10 +6,10 @@
 
 ### Structure ###
 
-* **src**
+* **src**  
   _The container for project source code.  Individual examples and prototypes are further organized by subfolder._
   
-* **data**
+* **data**  
   _The container for sets of training and validation data used by the various examples and prototypes.  Data sets are further organized by subfolder, attempting to group the related training and validation data together._
   
   
