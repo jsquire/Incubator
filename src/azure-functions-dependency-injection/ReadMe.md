@@ -10,6 +10,6 @@ The code herein is prototype-level; best practices are not always adhered to and
 
 ### Structure ###
 
-* **src**
+* **src**  
   _The container for project source code._
   
