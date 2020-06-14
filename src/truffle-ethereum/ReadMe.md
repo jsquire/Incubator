@@ -15,4 +15,4 @@ This project was a point-in-time experiment and is not actively maintained.  Ass
 ### Structure
 
 * **src**  
-_The container for project source code._
+  _The container for project source code._
