@@ -1,6 +1,6 @@
-# Node with Typescript Exploration #
+# Node with Typescript Exploration
 
-### Summary ###
+### Summary
 
 Begun in early 2018, this exploration was intended primarily to determine the feasibility of a two-stage transpilation process, allowing TypeScript to be transpiled to ECMA Script 6 and then using Babel to perform the ES6->ES5 transpilation.  At the time, there were some minor incompatibilities between the TypeScript and Babel results when reduced to ES5.  Since this exploration was performed, the incompatibilities in the TypeScript compiler have been addressed and Babel 7 is no longer in beta; either is worth considering as a potential choice for mixing TypeScript and ECMA Script in a Node codebase, either applying the Babel->TypeScript delegation approach used here or leveraging the TypeScript compiler for both TypeScript and ECMA Script files.
 
@@ -10,11 +10,11 @@ The code is prototype-level, which is to say that there’s a bunch of best prac
 
 Despite the rough patches, I did try to comment extensively to narrate what was going on and why.
 
-#### Warning ####
+#### Warning
 
 This project was a point-in-time experiment and is not actively maintained.  Assets have aged and may have security vulnerabilities.  It is highly recommended that dependencies aare updated before making use of any project assets.
 
-### Project Goals ###
+### Project Goals
 
 - Build out scaffolding for a Node project, incorporating a modern tool set and organized into a lucid structure
 - Develop with TypeScript and modern ECMA Script, ensuring consistency in the final transpiled ES5 output
@@ -22,64 +22,64 @@ This project was a point-in-time experiment and is not actively maintained.  Ass
 - Allow debugging via VS Code and Chrome Debug Tools
 - Account for a formal build step (per environment) which does bundling, chunking, minification, etc.
 
-### Structure ###
+### Structure
 
-* **.vscode**
-  <br />_The container for tasks and settings for the [Visual Studio Code](https://code.visualstudio.com/) editor.  These are portable and not specific to my particular environment._
+* **.vscode**  
+  _The container for tasks and settings for the [Visual Studio Code](https://code.visualstudio.com/) editor.  These are portable and not specific to my particular environment._
 
-* **build**
-  <br />_The container for artifacts related to build activities, such as transpiling and bundling._
+* **build**  
+  _The container for artifacts related to build activities, such as transpiling and bundling._
 
-* **config**
-  <br />_The container for application configuration artifacts for different environments._
+* **config**  
+  _The container for application configuration artifacts for different environments._
 
-* **src**
-  <br />_The container for project source code._
+* **src**  
+  _The container for project source code._
 
-* **.babelrc**
-  <br />_The configuration and options for Babel transpilation._
+* **.babelrc**  
+  _The configuration and options for Babel transpilation._
 
-* **.editorconfig**
-  <br />_The standardized [editor configuration](https://editorconfig.org/) for defining and maintaining common conventions for project code across developers._
+* **.editorconfig**  
+  _The standardized [editor configuration](https://editorconfig.org/) for defining and maintaining common conventions for project code across developers._
 
-* **.gitignore**
-  <br />_The local overrides for the default ignore configuration from the repository root._
+* **.gitignore**  
+  _The local overrides for the default ignore configuration from the repository root._
 
-* **.nycrc**
-  <br />_The configuration for code test coverage inspection._
+* **.nycrc**  
+  _The configuration for code test coverage inspection._
 
-* **package.json**
-  <br />_The standard Node project file, defining NPM scripts and package dependencies._
+* **package.json**  
+  _The standard Node project file, defining NPM scripts and package dependencies._
 
-* **tsconfig.json**
-  <br />_The configuration for the TypeScript compiler (as invoked by Babel)._
+* **tsconfig.json**  
+  _The configuration for the TypeScript compiler (as invoked by Babel)._
 
-* **tslint.json**
-  <br />_The configuration for TSLint, responsible for static analysis of the TypeScript and ECMA Script code._
+* **tslint.json**  
+  _The configuration for TSLint, responsible for static analysis of the TypeScript and ECMA Script code._
 
-### NPM Scripts ###
+### NPM Scripts
 
 - Tasks named "name" and "name-name" are meant to be invoked directly.
 - Tasks in the pattern of "name/name" are meant to be child tasks and are not intended to be directly invoked
 
-### Transpiling ###
+### Transpiling
 
 - Babel is the primary transpiler in charge of the pipeline; it has been configured to delegate to the TypeScript compiler as needed.
 
 - The TypeScript compiler is responsible for transpiling TypeScript to ES2016 for Babel to consume; it is invoked as a child of Babel in the pipeline.
 
-### Bundling ###
+### Bundling
 
 - Because Babel is handling TypeScript, there no need for a special TS loader for WebPack.  Just map the TypeScript source to Babel as you would any other script.
 
-### Testing ###
+### Testing
 
 - **Runner:**  Mocha
 - **Assertions:**  Chai
 - **Mocking:**  Sinon
 - **Coverage:** Istanbul / NYC
 
-### Environment Notes ###
+### Environment Notes
 
 - Development and testing on Windows took place using the standard command line environment as well as under the Windows Subsystem for Linux (WSL).  Testing also took place on Ubuntu 18.04; both were utilizing Node Version Manager (NVM) to managed multiple concurrent versions of Node.
 
