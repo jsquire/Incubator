@@ -8,10 +8,10 @@ Should any project graduate to something that will be more formally pursued, it 
 
 ### Structure ###
 
-* **root**
+* **root**  
   _The root contains the overall repository configuration files, license, and general structure._
 
-* **src**
+* **src**  
   _The base container for code artifacts, be they a protoype project or just a loose collection of files.  These are further organized by subfolder to differentiate projects and languages/platforms.  The intent is that contents of each subfolder under `src` each are independent, with each having a dedicated ReadMe to offer context-sensitive information about the project._   
 
 ### Licensing ###
