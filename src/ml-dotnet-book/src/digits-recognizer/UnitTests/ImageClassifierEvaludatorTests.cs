@@ -76,7 +76,6 @@ namespace MachineLearningBook.DigitsRecognizer.UnitTests
                 .Setup(target => target.Classify(It.IsAny<IEnumerable<int>>()))
                 .Returns(expected);
 
-
             var set = new[] 
             {
                 new ImageObservation<int>(expected, new[] { 1, 2, 3 }),
