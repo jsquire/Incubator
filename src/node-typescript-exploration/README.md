@@ -10,7 +10,7 @@ The code is prototype-level, which is to say that there’s a bunch of best prac
 
 Despite the rough patches, I did try to comment extensively to narrate what was going on and why.
 
-#### Warning
+### Warning
 
 This project was a point-in-time experiment and is not actively maintained.  Assets have aged and may have security vulnerabilities.  It is highly recommended that dependencies aare updated before making use of any project assets.
 
