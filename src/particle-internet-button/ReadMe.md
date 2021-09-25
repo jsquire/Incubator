@@ -6,7 +6,7 @@ The [Particle Internet button](https://docs.particle.io/guide/tools-and-features
 
 With built-in WiFi and the ability to interact with the outside world using web hooks for both incoming and outgoing requests, it makes for a simple, approachable device with which to explore the IOT world.
 
-#### Warning
+### Warning
 
 This project was a point-in-time experiment and is not actively maintained. Assets have aged and may have security vulnerabilities. It is highly recommended that dependencies aare updated before making use of any project assets.
 
