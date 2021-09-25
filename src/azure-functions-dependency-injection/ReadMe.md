@@ -8,7 +8,7 @@ The approach taken is to consider the Function entry point as an infrastructure 
 
 The code herein is prototype-level; best practices are not always adhered to and there is a good level of polish missing for something that I’d consider to be production-worthy.   For example, there are no unit tests, and I’m willfully ignoring best practices around exception handling, logging, and similar considerations.  I did try to comment extensively to narrate what was going on and why, though I did omit some boilerplate XML Doc comments on simple constructs that I felt were self-explanatory.
 
-#### Warning
+### Warning
 
 This project was a point-in-time experiment and is not actively maintained.  Assets have aged and may have security vulnerabilities.  It is highly recommended that dependencies aare updated before making use of any project assets.
 
