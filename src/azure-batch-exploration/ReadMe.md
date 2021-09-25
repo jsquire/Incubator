@@ -6,7 +6,7 @@ Some exploration of the Azure Batch service for some basic scenarios for process
 
 The code is prototype-level, which is to say that there’s a bunch of best practices and polish missing for something that I’d consider to be production-worthy.   For example, there are no unit tests, much was left static and local to the entry point, and I’m willfully ignoring best practices around exception handling.  On the upside, I did try to comment extensively to narrate what was going on and why.   There remains a ton of depth to Azure Batch that I haven’t explored, much of which is dedicated to finer-grained control over task and pool management and capturing of task output.
 
-#### Warning
+### Warning
 
 This project was a point-in-time experiment and is not actively maintained.  Assets have aged and may have security vulnerabilities.  It is highly recommended that dependencies aare updated before making use of any project assets.
 
