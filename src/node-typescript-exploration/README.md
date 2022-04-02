@@ -83,7 +83,7 @@ This project was a point-in-time experiment and is not actively maintained.  Ass
 
 - Development and testing on Windows took place using the standard command line environment as well as under the Windows Subsystem for Linux (WSL).  Testing also took place on Ubuntu 18.04; both were utilizing Node Version Manager (NVM) to managed multiple concurrent versions of Node.
 
-- Because neither NVM or Node Version Switcher (NVS) on Windows can upgrade NPM via the normal method of running "npm I -g npm@latest", there needs to be a standard Node install at the system level as well as the one installed with NVM.
+- Because neither NVM or Node Version Switcher (NVS) on Windows can upgrade NPM via the normal method of running `npm I -g npm@latest`, there needs to be a standard Node install at the system level as well as the one installed with NVM.
 
 - NPM must be upgraded at the system level using the package `npm-windows-upgrade`;  The NVM/NVS instances use the system-level NPM, by coincidence, instead of the one bundled with them.
 
@@ -93,6 +93,6 @@ This project was a point-in-time experiment and is not actively maintained.  Ass
 
 - Note that the NPM script referencing issue exists only on Windows when using NVM/NVS from the standard command line environment.  The scripts behave normally on Linux, and on Windows without NVM or under WSL.
 
-- When debugging tests, breakpoints may not be honored without including a "debugger" call in the test; I believe this may have something to do with source maps for transpiling on the fly.
+- When debugging tests, breakpoints may not be honored without including a `debugger` call in the test; I believe this may have something to do with source maps for transpiling on the fly.
 
-- When attaching to tests started with "--inspect-brk" you may need to restart the VS Code debugger;  it seems to get stuck in internal code.  Restarting hits the "debugger" call.
+- When attaching to tests started with `--inspect-brk` you may need to restart the VS Code debugger;  it seems to get stuck in internal code.  Restarting hits the `debugger` call.
